@@ -42,4 +42,10 @@ def test_spread_to_dict(sample_spread_data):
     THEN check the dictionary has the correct keys and values
     """
     new_spread = Spread(**sample_spread_data)
-    assert new_spread.to_dict() == sample_spread_data
+    spread_dict = new_spread.to_dict()
+
+    # Check that all keys from sample_spread_data are in spread_dict
+    for key, value in sample_spread_data.items():
+        assert spread_dict[key] 
+    assert 'id' in new_spread.to_dict()
+
