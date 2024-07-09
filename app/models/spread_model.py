@@ -11,7 +11,7 @@ class Spread(db.Model):
     number_of_cards = db.Column(db.Integer, nullable=False)
     layout_id = db.Column(
         db.Integer,
-        db.ForeignKey('layout.id'),
+        db.ForeignKey('spread_layouts.id'),
         nullable=False
     )
 
