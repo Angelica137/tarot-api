@@ -61,15 +61,18 @@ def test_new_card(test_app, sample_card_data):
     assert new_card.arcana == "Major Arcana"
     assert new_card.suit == "Trump"
     assert new_card.img == "m00.jpg"
-    assert json.loads(new_card.fortune_telling)[0] == "Watch for new projects and new beginnings"
+    assert json.loads(new_card.fortune_telling)[
+        0] == "Watch for new projects and new beginnings"
     assert json.loads(new_card.keywords)[0] == "freedom"
-    assert json.loads(new_card.meanings)["light"][0] == "Freeing yourself from limitation"
+    assert json.loads(new_card.meanings)[
+        "light"][0] == "Freeing yourself from limitation"
     assert new_card.archetype == "The Divine Madman"
     assert new_card.hebrew_alphabet == "Aleph/Ox/1"
     assert new_card.numerology == "0 (off the scale; pure potential)"
     assert new_card.elemental == "Air"
     assert "Adam before the fall" in new_card.mythical_spiritual
-    assert json.loads(new_card.questions_to_ask)[0] == "What would I do if I felt free to take a leap?"
+    assert json.loads(new_card.questions_to_ask)[
+        0] == "What would I do if I felt free to take a leap?"
 
 
 def test_card_representation(sample_card_data):
