@@ -50,13 +50,13 @@ class Card(db.Model):
             'arcana': self.arcana,
             'suit': self.suit,
             'img': self.img,
-            'fortune_telling': self.fortune_telling,
-            'keywords': self.keywords,
-            'meanings': self.meanings,
-            'archetype': self.archetype,
-            'hebrew_alphabet': self.hebrew_alphabet,
-            'numerology': self.numerology,
-            'elemental': self.elemental,
-            'mythical_spiritual': self.mythical_spiritual,
-            'questions_to_ask': self.questions_to_ask
+            'fortune_telling': json.loads(self.fortune_telling),
+            'keywords': json.loads(self.keywords),
+            'meanings': json.loads(self.meanings),
+            'Archetype': self.archetype,
+            'Hebrew Alphabet': self.hebrew_alphabet,
+            'Numerology': self.numerology,
+            'Elemental': self.elemental,
+            'Mythical/Spiritual': self.mythical_spiritual,
+            'Questions to Ask': json.loads(self.questions_to_ask)
         }

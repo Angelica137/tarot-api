@@ -70,3 +70,23 @@ def test_new_card(test_app, sample_card_data):
     assert new_card.elemental == "Air"
     assert "Adam before the fall" in new_card.mythical_spiritual
     assert json.loads(new_card.questions_to_ask)[0] == "What would I do if I felt free to take a leap?"
+
+
+def test_card_representation(sample_card_data):
+    """
+    GIVEN a Card instance
+    WHEN __repr__() is called
+    THEN it should return a string with teh card's name
+    """
+    card = Card.from_dict(sample_card_data)
+    assert repr(card) == "<Card The Fool>"
+
+
+def test_card_to_dict(sample_card_data):
+    """
+    GIVEN a Card instance
+    WHEN to_dict() is called
+    THEN it should return a dictionary with the card's data
+    """
+    card = Card.from_dict(sample_card_data)
+    assert card.to_dict() == sample_card_data
