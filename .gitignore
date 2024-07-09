@@ -9,6 +9,10 @@ env/
 # Python bytecode
 __pycache__/
 *.py[cod]
+*.pyc
+*.pyo
+*.pyd
+.Python
 
 # Flask file-based database
 *.db

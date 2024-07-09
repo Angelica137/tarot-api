@@ -26,7 +26,8 @@ def client(test_app):
 def session(test_db):
     connection = test_db.engine.connect()
     transaction = connection.begin()
-    session = test_db.create_scoped_session(options={"bind": connection, "binds": {}})
+    session = test_db.create_scoped_session(
+        options={"bind": connection, "binds": {}})
     yield session
     session.close()
     transaction.rollback()

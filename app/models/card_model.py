@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 from app import db
 
@@ -10,7 +11,8 @@ class Card(db.Model):
     arcana = db.Column(db.String(100), nullable=False)
     suit = db.Column(db.String(100), nullable=False)
     img = db.Column(db.String(200), nullable=False)
-    fortune_telling = db.Column(db.Text, nullable=True)  # Stored as JSON string
+    fortune_telling = db.Column(
+        db.Text, nullable=True)  # Stored as JSON string
     keywords = db.Column(db.Text, nullable=True)  # Stored as JSON string
     meanings = db.Column(db.Text, nullable=True)  # Stored as JSON string
     archetype = db.Column(db.String(100))
@@ -41,7 +43,7 @@ class Card(db.Model):
             elemental=data['Elemental'],
             mythical_spiritual=data['Mythical/Spiritual'],
             questions_to_ask=json.dumps(data['Questions to Ask'])
-            )
+        )
 
     def to_dict(self):
         return {
