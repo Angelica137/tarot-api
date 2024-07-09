@@ -12,3 +12,6 @@ class Spread(db.Model):
         db.ForeignKey('layout.id'),
         nullable=False
     )
+
+    def __repr__(self):
+        return f"<Spread '{self.name}' with {self.number_of_cards} cards>"
