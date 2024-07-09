@@ -96,3 +96,13 @@ def test_card_to_dict(sample_card_data):
     for key, value in sample_card_data.items():
         assert card_dict[key]
     assert 'id' in card_dict
+
+
+def test_card_from_dict(sample_card_data):
+    """
+    GIVEN a Card model
+    WHEN a new Card is created from a dictionary
+    THEN check the card is created correctly
+    """
+    new_card = Card.from_dict(sample_card_data)
+    assert isinstance(new_card, Card)

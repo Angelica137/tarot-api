@@ -24,3 +24,7 @@ class Spread(db.Model):
             "number_of_cards": self.number_of_cards,
             "layout_id": self.layout_id
         }
+
+    @staticmethod
+    def from_dict(spread_dict):
+        return Spread(**spread_dict)  # dictionary unpacking
