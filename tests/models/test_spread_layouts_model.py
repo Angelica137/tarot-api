@@ -58,7 +58,8 @@ def test_spread_layout_from_dict(sample_spread_layout_data):
     layout = SpreadLayout.from_dict(sample_spread_layout_data)
     assert isinstance(layout, SpreadLayout)
     assert layout.name == sample_spread_layout_data['name']
-    assert json.loads(layout.layout_description) == sample_spread_layout_data['layout_description']
+    assert json.loads(
+        layout.layout_description) == sample_spread_layout_data['layout_description']
 
 
 def test_spread_layout_to_dict(sample_spread_layout_data):
