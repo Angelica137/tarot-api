@@ -11,3 +11,17 @@ class SpreadLayout(db.Model):
 
     def __repr__(self):
         return f"<SpreadLayout {self.name}>"
+
+    @staticmethod
+    def from_dict(data):
+        return SpreadLayout(
+            name=data['name'],
+            layout_description=json.dumps(data['layout_description'])
+        )
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "layout_description": json.loads(self.layout_description)
+        }

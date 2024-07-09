@@ -40,5 +40,34 @@ def test_new_spread_layout(sample_spread_layout_data):
 
 
 def test_spread_layout_representation(sample_spread_layout_data):
+    """
+    GIVEN a SpreadLayouts model
+    WHEN the repr() function is called on the model
+    THEN check that the repr is in the correct format
+    """
     layout = SpreadLayout(**sample_spread_layout_data)
     assert repr(layout) == "<SpreadLayout Three Card Spread>"
+
+
+def test_spread_layout_from_dict(sample_spread_layout_data):
+    """
+    GIVEN a SpreadLayouts model
+    WHEN the from_dict() function is called on the model
+    THEN check that the model is created correctly
+    """
+    layout = SpreadLayout.from_dict(sample_spread_layout_data)
+    assert isinstance(layout, SpreadLayout)
+    assert layout.name == sample_spread_layout_data['name']
+    assert json.loads(layout.layout_description) == sample_spread_layout_data['layout_description']
+
+
+def test_spread_layout_to_dict(sample_spread_layout_data):
+    """
+    GIVEN a SpreadLayouts model
+    WHEN the to_dict() function is called on the model
+    THEN check that the dict is in the correct format
+    """
+    layout = SpreadLayout.from_dict(sample_spread_layout_data)
+    layout_dict = layout.to_dict()
+    assert layout_dict['name'] == sample_spread_layout_data['name']
+    assert layout_dict['layout_description'] == sample_spread_layout_data['layout_description']
