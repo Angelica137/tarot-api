@@ -5,7 +5,7 @@ import json
 
 
 @pytest.fixture
-def spread_layouts_model():
+def sample_spread_layout_data():
     return {
         "id": 1,
         "name": "Three Card Spread",
@@ -20,13 +20,13 @@ def spread_layouts_model():
     }
 
 
-def test_new_spread_layout(spread_layouts_model):
+def test_new_spread_layout(sample_spread_layout_data):
     """
     GIVEN a SpreadLayouts model
     WHEN a new SpreadLayouts is created
     THEN check the id, name, and layout_description are correct
     """
-    new_spread_layouts = SpreadLayout(**spread_layouts_model)
+    new_spread_layouts = SpreadLayout(**sample_spread_layout_data)
     assert new_spread_layouts.id == 1
     assert new_spread_layouts.name == "Three Card Spread"
     assert new_spread_layouts.layout_description == json.dumps({
@@ -37,3 +37,8 @@ def test_new_spread_layout(spread_layouts_model):
                 {"name": "Future", "x": 2, "y": 0}
             ]
         })
+
+
+def test_spread_layout_representation(sample_spread_layout_data):
+    layout = SpreadLayout(**sample_spread_layout_data)
+    assert repr(layout) == "<SpreadLayout Three Card Spread>"
