@@ -32,11 +32,11 @@ def test_new_spread_layout(sample_spread_layout_data):
     assert new_spread_layouts.layout_description == json.dumps({
         "type": "linear",
         "positions": [
-                {"name": "Past", "x": 0, "y": 0},
-                {"name": "Present", "x": 1, "y": 0},
-                {"name": "Future", "x": 2, "y": 0}
-            ]
-        })
+            {"name": "Past", "x": 0, "y": 0},
+            {"name": "Present", "x": 1, "y": 0},
+            {"name": "Future", "x": 2, "y": 0}
+        ]
+    })
 
 
 def test_spread_layout_representation(sample_spread_layout_data):
