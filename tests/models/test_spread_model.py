@@ -46,6 +46,18 @@ def test_spread_to_dict(sample_spread_data):
 
     # Check that all keys from sample_spread_data are in spread_dict
     for key, value in sample_spread_data.items():
-        assert spread_dict[key] 
-    assert 'id' in new_spread.to_dict()
+        assert spread_dict[key]
+    assert 'id' in spread_dict
 
+
+def test_spread_from_dict(sample_spread_data):
+    """
+    GIVEN a Spread model
+    WHEN the spread is converted from a dictionary
+    THEN check the spread is created correctly
+    """
+    new_spread = Spread.from_dict(sample_spread_data)
+    assert isinstance(new_spread, Spread)
+    assert new_spread.name == "Sample Spread"
+    assert new_spread.number_of_cards == 5
+    assert new_spread.layout_id == 1

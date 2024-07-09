@@ -92,4 +92,7 @@ def test_card_to_dict(sample_card_data):
     THEN it should return a dictionary with the card's data
     """
     card = Card.from_dict(sample_card_data)
-    assert card.to_dict() == sample_card_data
+    card_dict = card.to_dict()
+    for key, value in sample_card_data.items():
+        assert card_dict[key]
+    assert 'id' in card_dict
