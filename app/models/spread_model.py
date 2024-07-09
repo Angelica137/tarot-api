@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 from app import db
+from spread_layouts_model import SpreadLayout
 
 
 class Spread(db.Model):
