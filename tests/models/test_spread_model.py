@@ -33,3 +33,13 @@ def test_spread_representation(sample_spread_data):
     """
     new_spread = Spread(**sample_spread_data)
     assert repr(new_spread) == "<Spread 'Sample Spread' with 5 cards>"
+
+
+def test_spread_to_dict(sample_spread_data):
+    """
+    GIVEN a Spread model
+    WHEN the spread is converted to a dictionary
+    THEN check the dictionary has the correct keys and values
+    """
+    new_spread = Spread(**sample_spread_data)
+    assert new_spread.to_dict() == sample_spread_data
