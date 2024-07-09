@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import json
 from app import db
 from app.models.spread_layouts_model import SpreadLayout
 

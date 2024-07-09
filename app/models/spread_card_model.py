@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import json
 from app import db
 from app.models.spread_model import Spread
 from app.models.card_model import Card
