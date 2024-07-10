@@ -48,3 +48,13 @@ def test_spread_card_to_dict(sample_spread_card_data):
     """
     spread_card = SpreadCard(**sample_spread_card_data)
     assert spread_card.to_dict() == sample_spread_card_data
+
+
+def test_spread_card_from_dict(sample_spread_card_data):
+    """
+    GIVEN a SpreadCard model
+    WHEN the spread_card is created from a dictionary
+    THEN check the values are correct
+    """
+    spread_card = SpreadCard.from_dict(sample_spread_card_data)
+    assert spread_card.to_dict() == sample_spread_card_data

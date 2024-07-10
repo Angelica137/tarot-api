@@ -33,3 +33,7 @@ class SpreadCard(db.Model):
             'position_name': self.position_name,
             'position_interpretation': self.position_interpretation
         }
+
+    @staticmethod
+    def from_dict(data):
+        return SpreadCard(**data)
