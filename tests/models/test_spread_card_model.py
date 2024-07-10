@@ -37,4 +37,4 @@ def test_spread_card_representation(sample_spread_card_data):
     THEN check the string is correct
     """
     spread_card = SpreadCard(**sample_spread_card_data)
-    assert str(spread_card) == "Past"
+    assert repr(spread_card) == "<SpreadCard Sample interpretation in position Past of spread 1>"

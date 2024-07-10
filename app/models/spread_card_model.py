@@ -20,3 +20,6 @@ class SpreadCard(db.Model):
         db.ForeignKey('card.id'),
         nullable=False
     )
+
+    def __repr__(self):
+        return f"<SpreadCard {self.position_interpretation} in position {self.position_name} of spread {self.spread_id}>"
