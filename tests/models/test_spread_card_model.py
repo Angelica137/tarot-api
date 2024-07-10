@@ -8,7 +8,8 @@ def sample_spread_card_data():
     return {
         "id": 1,
         "position": 1,
-        "interpretation": "Sample interpretation",
+        "position_name": "Past",
+        "position_interpretation": "Sample interpretation",
         "spread_id": 1,
         "card_id": 1
     }
@@ -23,7 +24,17 @@ def test_new_spread_card(sample_spread_card_data):
     new_spread_card = SpreadCard(**sample_spread_card_data)
     assert new_spread_card.id == 1
     assert new_spread_card.position == 1
-    assert new_spread_card.interpretation == "Sample interpretation"
+    assert new_spread_card.position_interpretation == "Sample interpretation"
     assert new_spread_card.spread_id == 1
     assert new_spread_card.card_id == 1
+    assert new_spread_card.position_name == "Past"
 
+
+def test_spread_card_representation(sample_spread_card_data):
+    """
+    GIVEN a SpreadCard model
+    WHEN the spread_card is converted to a string
+    THEN check the string is correct
+    """
+    spread_card = SpreadCard(**sample_spread_card_data)
+    assert str(spread_card) == "Past"
