@@ -23,3 +23,13 @@ class SpreadCard(db.Model):
 
     def __repr__(self):
         return f"<SpreadCard {self.position_interpretation} in position {self.position_name} of spread {self.spread_id}>"
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'spread_id': self.spread_id,
+            'card_id': self.card_id,
+            'position': self.position,
+            'position_name': self.position_name,
+            'position_interpretation': self.position_interpretation
+        }

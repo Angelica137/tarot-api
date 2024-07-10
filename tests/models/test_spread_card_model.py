@@ -38,3 +38,13 @@ def test_spread_card_representation(sample_spread_card_data):
     """
     spread_card = SpreadCard(**sample_spread_card_data)
     assert repr(spread_card) == "<SpreadCard Sample interpretation in position Past of spread 1>"
+
+
+def test_spread_card_to_dict(sample_spread_card_data):
+    """
+    GIVEN a SpreadCard model
+    WHEN the spread_card is converted to a dictionary
+    THEN check the values are correct
+    """
+    spread_card = SpreadCard(**sample_spread_card_data)
+    assert spread_card.to_dict() == sample_spread_card_data
