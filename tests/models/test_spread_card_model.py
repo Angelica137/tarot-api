@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import pytest
 from app.models.spread_card_model import SpreadCard
+from app.models.spread_model import Spread
+from app.models.card_model import Card
 
 
 @pytest.fixture
