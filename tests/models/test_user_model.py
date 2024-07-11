@@ -64,3 +64,39 @@ def test_user_to_dict(sample_user_data):
 
     assert isinstance(user_dict['created_at'], str)
     assert isinstance(user_dict['updated_at'], str)
+
+
+def test_set_password():
+    """
+    GIVEN a User model
+    WHEN the password is set
+    THEN check the password is hashed and can be verified
+    """
+    user = User(name='Test User', email='test@example.com')
+
+    user.set_password('test_password')
+
+    assert user.password_hash is not None
+    assert user.password_hash != 'test_password'
+
+    assert user.check_password('test_password')
+    assert not user.check_password('wrong_password')
+
+
+def test_password_hashing():
+    """
+    GIVEN a User model
+    WHEN the password is changed
+    THEN check that the new password hash is different from the old one
+    """
+    user = User(name='Test User', email='test@example.com')
+
+    user.set_password('initial_password')
+    initial_password_hash = user.password_hash
+
+    user.set_password('new_password')
+
+    assert user.password_hash != initial_password_hash
+
+    assert user.check_password('new_password')
+    assert not user.check_password('initial_password')
