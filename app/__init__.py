@@ -28,4 +28,4 @@ def create_app(config_class=Config):
     return app
 
 
-from app.models import Spread, Card, SpreadCard, SpreadLayouts
+from app.models import Spread, Card, SpreadCard, SpreadLayout
