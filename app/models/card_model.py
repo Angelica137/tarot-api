@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
-from app.extensions import db
+from app import db
 
 
 class Card(db.Model):
