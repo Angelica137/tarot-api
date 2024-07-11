@@ -19,7 +19,8 @@ def test_new_spread_card(sample_spread_card_data):
     """
     GIVEN a SpreadCard model
     WHEN a new SpreadCard is created
-    THEN check the id, position, interpretation, spread_id, and card_id are correct
+    THEN check the id, position, interpretation, spread_id, and card_id are
+    correct
     """
     new_spread_card = SpreadCard(**sample_spread_card_data)
     assert new_spread_card.id == 1
@@ -37,7 +38,8 @@ def test_spread_card_representation(sample_spread_card_data):
     THEN check the string is correct
     """
     spread_card = SpreadCard(**sample_spread_card_data)
-    assert repr(spread_card) == "<SpreadCard Sample interpretation in position Past of spread 1>"
+    assert repr(
+        spread_card) == "<SpreadCard Sample interpretation in position Past of spread 1>"
 
 
 def test_spread_card_to_dict(sample_spread_card_data):
