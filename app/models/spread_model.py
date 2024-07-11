@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from app import db
 from app.models.spread_layouts_model import SpreadLayout
+from app.extensions import db
 
 
 class Spread(db.Model):

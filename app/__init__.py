@@ -1,11 +1,6 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from config import Config, TestingConfig, DevelopmentConfig, ProductionConfig
-from app.models.spread_model import Spread
-from app.models.card_model import Card
-from app.models.spread_card_model import SpreadCard
-
-db = SQLAlchemy()
+from .extensions import db
 
 
 def create_app(config_class=Config):
@@ -31,3 +26,6 @@ def create_app(config_class=Config):
     app.register_blueprint(main_bp)
 
     return app
+
+
+from app.models import spread_model, card_model, spread_card_model
