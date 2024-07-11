@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from app import db
 from app.models.spread_layouts_model import SpreadLayout
+from flask_sqlalchemy import SQLAlchemy
 
 
 class Spread(db.Model):
