@@ -21,6 +21,10 @@ def create_app(config_class=Config):
     db.init_app(app)
     with app.app_context():
         db.create_all()
+        Card.__table__.create(db.engine)
+        Spread.__table__.create(db.engine)
+        SpreadCard.__table__.create(db.engine)
+        SpreadLayout.__table__.create(db.engine)
 
     from app.routes.routes import bp as main_bp
     app.register_blueprint(main_bp)
