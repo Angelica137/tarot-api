@@ -1,5 +1,8 @@
 import pytest
 from app import create_app, db
+from app.models.spread_model import Spread
+from app.models.card_model import Card
+from app.models.spread_card_model import SpreadCard
 
 
 @pytest.fixture(scope='module')
