@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
-
 from app import db
 
 
@@ -13,11 +12,24 @@ class Reading(db.Model):
         db.Integer, db.ForeignKey('spreads.id'), nullable=False
     )
     created_at = db.Column(
-        db.DateTime, nullable=False, default=datetime.utcnow
+        db.DateTime,
+        nullable=False,
+        default=datetime.utcnow,
     )
     updated_at = db.Column(
-        db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow
+        db.DateTime,
+        nullable=False,
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow,
     )
 
     def __repr__(self):
-        return f"<Reading id={self.id}, question='{self.question}', spread_id={self.spread_id}, created_at='{self.created_at}', updated_at='{self.updated_at}'>"
+        return (f"<Reading id={self.id}, question='{self.question[:20]}...', "
+                f"spread_id={self.spread_id}, "
+                f"created_at='{self.created_at.strftime('%Y-%m-%d %H:%M:%S')}', "
+                f"updated_at='{self.updated_at.strftime('%Y-%m-%d %H:%M:%S')}'>"
+                )
+
+    @staticmethod
+    def from_dict(data):
+        return Reading(**data)
