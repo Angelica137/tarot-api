@@ -1,7 +1,9 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from config import Config, TestingConfig, DevelopmentConfig, ProductionConfig
-
+from app.models.spread_model import Spread
+from app.models.card_model import Card
+from app.models.spread_card_model import SpreadCard
 
 db = SQLAlchemy()
 
@@ -22,6 +24,8 @@ def create_app(config_class=Config):
         app.config.from_object(config_class)
 
     db.init_app(app)
+    with app.app_context():
+        db.create_all()
 
     from app.routes.routes import bp as main_bp
     app.register_blueprint(main_bp)
