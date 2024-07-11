@@ -6,6 +6,7 @@ from app.extensions import db
 @pytest.fixture(scope='module')
 def test_app():
     app = create_app('testing')
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
     with app.app_context():
         db.create_all()
         yield app
