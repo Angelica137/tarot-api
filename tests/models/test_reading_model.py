@@ -56,3 +56,13 @@ def test_reading_from_dict(sample_reading_data):
     assert reading.spread_id == 1
     assert reading.created_at == datetime(2021, 1, 1, 12, 0, 0)
     assert reading.updated_at == datetime(2021, 1, 1, 12, 0, 0)
+
+
+def test_reading_to_dict(sample_reading_data):
+    """
+    GIVEN a Reading model
+    WHEN the to_dict() function is called on the model
+    THEN check that the model is converted to a dictionary correctly
+    """
+    reading = Reading(**sample_reading_data)
+    assert reading.to_dict() == sample_reading_data
