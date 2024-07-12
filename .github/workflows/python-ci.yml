@@ -29,7 +29,7 @@ jobs:
 
       - name: Run autopep8
         run: |
-          autopep8 --in-place --recursive --exclude venv .
+          autopep8 --in-place --recursive --exclude=migrations,venv .
       - name: Check for modified files (excluding __pycache__)
         id: git-check
         run: |
