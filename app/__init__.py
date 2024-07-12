@@ -1,8 +1,11 @@
 from flask import Flask
-from config import Config, TestingConfig, DevelopmentConfig, ProductionConfig
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from config import Config, TestingConfig, DevelopmentConfig, ProductionConfig
+
 
 db = SQLAlchemy()
+migrate = Migrate()
 
 
 def create_app(config_class=Config):
@@ -21,8 +24,9 @@ def create_app(config_class=Config):
         app.config.from_object(config_class)
 
     db.init_app(app)
-    with app.app_context():
-        db.create_all()
+    migrate.init_app(app, db)
+
+    from app.all_models import User, Reading, Spread, SpreadCard, Card, SpreadLayout
 
     from app.routes.routes import bp as main_bp
     app.register_blueprint(main_bp)
