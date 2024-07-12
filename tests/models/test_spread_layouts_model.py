@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import pytest
 from app.models.spread_layout_model import SpreadLayout
+from app.models.spread_model import Spread
 import json
 
 

@@ -13,6 +13,7 @@ class Spread(db.Model):
         db.ForeignKey('spread_layouts.id'),
         nullable=False
     )
+    layout = db.relationship('SpreadLayout')
 
     def __repr__(self):
         return f"<Spread '{self.name}' with {self.number_of_cards} cards>"

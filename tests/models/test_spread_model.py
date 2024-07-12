@@ -14,6 +14,22 @@ def sample_spread_data():
     }
 
 
+@pytest.fixture
+def sample_spread_layout_data():
+    return {
+        "id": 1,
+        "name": "Three Card Spread",
+        "layout_description": json.dumps({
+            "type": "linear",
+            "positions": [
+                {"name": "Past", "x": 0, "y": 0},
+                {"name": "Present", "x": 1, "y": 0},
+                {"name": "Future", "x": 2, "y": 0}
+            ]
+        })
+    }
+
+
 def test_new_spread(sample_spread_data):
     """
     GIVEN a Spread model
@@ -62,3 +78,17 @@ def test_spread_from_dict(sample_spread_data):
     assert new_spread.name == "Sample Spread"
     assert new_spread.number_of_cards == 5
     assert new_spread.layout_id == 1
+
+
+def test_spread_with_layout(sample_spread_data, sample_spread_layout_data):
+    """
+    GIVEN a Spread model with a SpreadLayout
+    WHEN a new Spread is created
+    THEN check that the Spread is correctly associated with the SpreadLayout
+    """
+    layout = SpreadLayout(**sample_spread_layout_data)
+    spread = Spread(**sample_spread_data)
+    spread.layout = layout
+
+    assert spread.layout.name == sample_spread_layout_data['name']
+    assert json.loads(spread.layout.layout_description) == json.loads(sample_spread_layout_data['layout_description'])
