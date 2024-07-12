@@ -91,4 +91,5 @@ def test_spread_with_layout(sample_spread_data, sample_spread_layout_data):
     spread.layout = layout
 
     assert spread.layout.name == sample_spread_layout_data['name']
-    assert json.loads(spread.layout.layout_description) == json.loads(sample_spread_layout_data['layout_description'])
+    assert json.loads(spread.layout.layout_description) == json.loads(
+        sample_spread_layout_data['layout_description'])
