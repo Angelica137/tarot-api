@@ -12,40 +12,19 @@ def sample_card_data():
         "arcana": "Major Arcana",
         "suit": "Trump",
         "img": "m00.jpg",
-        "fortune_telling": [
-            "Watch for new projects and new beginnings",
-            "Prepare to take something on faith",
-            "Something new comes your way; go for it"
-        ],
-        "keywords": [
-            "freedom",
-            "faith",
-            "inexperience",
-            "innocence"
-        ],
+        "fortune_telling": ["Watch for new projects and new beginnings"],
+        "keywords": ["freedom"],
         "meanings": {
-            "light": [
-                "Freeing yourself from limitation",
-                "Expressing joy and youthful vigor",
-                "Being open-minded",
-                "Taking a leap of faith"
-            ],
-            "shadow": [
-                "Being gullible and naive",
-                "Taking unnecessary risks",
-                "Failing to be serious when required"
-            ]
+            "light": ["Freeing yourself from limitation"]
         },
-        "Archetype": "The Divine Madman",
-        "Hebrew Alphabet": "Aleph/Ox/1",
-        "Numerology": "0 (off the scale; pure potential)",
-        "Elemental": "Air",
-        "Mythical/Spiritual": "Adam before the fall. Christ as a wandering holy madman.",
-        "Questions to Ask": [
-            "What would I do if I felt free to take a leap?",
-            "How willing am I to be vulnerable and open?",
-            "How might past experiences help in this new situation?"
-        ]
+        "archetype": "The Divine Madman",
+        "hebrew_alphabet": "Aleph/Ox/1",
+        "numerology": "0 (off the scale; pure potential)",
+        "elemental": "Air",
+        "mythical_spiritual": "Adam before the fall...",
+        "questions_to_ask": ["What would I do if I felt free to take a leap?"],
+        "affirmation": "I am open to all possibilities.",
+        "astrology": "Uranus, Air"
     }
 
 
@@ -64,8 +43,8 @@ def test_new_card(test_app, sample_card_data):
     assert json.loads(new_card.fortune_telling)[
         0] == "Watch for new projects and new beginnings"
     assert json.loads(new_card.keywords)[0] == "freedom"
-    assert json.loads(new_card.meanings)[
-        "light"][0] == "Freeing yourself from limitation"
+    assert json.loads(new_card.meanings)["light"][
+        0] == "Freeing yourself from limitation"
     assert new_card.archetype == "The Divine Madman"
     assert new_card.hebrew_alphabet == "Aleph/Ox/1"
     assert new_card.numerology == "0 (off the scale; pure potential)"
@@ -73,6 +52,8 @@ def test_new_card(test_app, sample_card_data):
     assert "Adam before the fall" in new_card.mythical_spiritual
     assert json.loads(new_card.questions_to_ask)[
         0] == "What would I do if I felt free to take a leap?"
+    assert new_card.affirmation == "I am open to all possibilities."
+    assert new_card.astrology == "Uranus, Air"
 
 
 def test_card_representation(sample_card_data):
@@ -91,10 +72,13 @@ def test_card_to_dict(sample_card_data):
     WHEN to_dict() is called
     THEN it should return a dictionary with the card's data
     """
-    card = Card.from_dict(sample_card_data)
+    card = Card.from_dict(sample_card_data)  # Change to use from_dict
     card_dict = card.to_dict()
     for key, value in sample_card_data.items():
-        assert card_dict[key]
+        if isinstance(value, list):
+            assert card_dict[key] == json.loads(json.dumps(value))
+        else:
+            assert card_dict[key] == value
     assert 'id' in card_dict
 
 
