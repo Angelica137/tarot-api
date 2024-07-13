@@ -5,6 +5,9 @@ from app import create_app, db
 @pytest.fixture(scope='module')
 def test_app():
     app = create_app('testing')
+    app.config['TESTING'] = True
+    app.config['SQLALCHEMY_ECHO'] = True
+
     with app.app_context():
         db.create_all()
         yield app
@@ -32,16 +35,3 @@ def session(test_db):
     session.close()
     transaction.rollback()
     connection.close()
-
-
-@pytest.fixture
-def client():
-    app = create_app('testing')
-    app.config['TESTING'] = True
-    app.config['SQLALCHEMY_ECHO'] = True
-
-    with app.app_context():
-        db.create_all()
-        yield app.test_client()
-        db.session.remove()
-        db.drop_all()

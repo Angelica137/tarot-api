@@ -25,12 +25,6 @@ def get_card(card_id):
     return jsonify(card.to_dict()), 200
 
 
-@api.errorhandler(404)
-def resource_not_found(e):
-    current_app.logger.error(f"404 error: {str(e)}")
-    return jsonify({"error": str(e)}), 404
-
-
 @api.route('/test_db')
 def test_db():
     try:

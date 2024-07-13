@@ -2,6 +2,12 @@ import pytest
 from app import create_app, db
 
 
+def test_hello_world(client):
+    response = client.get('/api/')
+    assert response.status_code == 200
+    assert b"Hello, World!" in response.data
+
+
 def test_db_connection(client):
     response = client.get('/api/test_db')
     assert response.status_code == 200, "Database connection failed"
