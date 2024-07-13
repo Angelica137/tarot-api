@@ -34,9 +34,8 @@ def test_get_existing_card(client):
             "img": "m00.jpg",
             "fortune_telling": json.dumps(["Watch for new projects and new beginnings"]),
             "keywords": json.dumps(["freedom"]),
-            "meanings": json.dumps({
-                "light": ["Freeing yourself from limitation"]
-            }),
+            "meanings": json.dumps({"light": [
+                "Freeing yourself from limitation"]}),
             "archetype": "The Divine Madman",
             "hebrew_alphabet": "Aleph/Ox/1",
             "numerology": "0 (off the scale; pure potential)",
