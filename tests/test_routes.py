@@ -65,7 +65,8 @@ def test_get_existing_card(client):
         assert data['number'] == '0'
         assert data['arcana'] == 'Major Arcana'
         assert data['suit'] == 'Trump'
-        assert data['fortune_telling'] == ["Watch for new projects and new beginnings"]
+        assert data['fortune_telling'] == [
+            "Watch for new projects and new beginnings"]
         assert data['keywords'] == ["freedom"]
         assert data['meanings'] == {
             "light": ["Freeing yourself from limitation"]}
