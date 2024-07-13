@@ -35,7 +35,8 @@ def resource_not_found(e):
 def test_db():
     try:
         cards = Card.query.all()
-        return jsonify({"message": f"Database connection successful. Found {len(cards)} cards."}), 200
+        return jsonify({"message": f"Database connection successful. Found {len(cards)} 
+                        cards."}), 200
     except Exception as e:
         current_app.logger.error(f"Database error: {str(e)}")
         return jsonify({"error": "Database connection failed"}), 500

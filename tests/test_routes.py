@@ -68,8 +68,10 @@ def test_get_existing_card(client):
         assert data['suit'] == 'Trump'
         assert data['fortune_telling'] == ["Watch for new projects and new beginnings"]
         assert data['keywords'] == ["freedom"]
-        assert data['meanings'] == {"light": ["Freeing yourself from limitation"]}
-        assert data['questions_to_ask'] == ["What would I do if I felt free to take a leap?"]
+        assert data['meanings'] == {
+            "light": ["Freeing yourself from limitation"]}
+        assert data['questions_to_ask'] == [
+            "What would I do if I felt free to take a leap?"]
 
 
 def test_get_non_existing_card(client):
