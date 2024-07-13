@@ -31,12 +31,14 @@ def create_app(config_class=Config):
     from app.routes.card_routes import api as card_api_blueprint
     app.register_blueprint(card_api_blueprint, url_prefix='/api')
 
+    from app.routes.spread_routes import spread_api_bp
+    app.register_blueprint(spread_api_bp, url_prefix='/api')
+
     if app.config['ENV'] == 'development':
         from app.routes.dev_routes import utility_bp
         app.register_blueprint(utility_bp, url_prefix='/dev')
 
     from app.routes.error_handlers import resource_not_found
     app.register_error_handler(404, resource_not_found)
-
 
     return app

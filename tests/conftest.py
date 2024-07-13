@@ -1,5 +1,6 @@
 import pytest
 from app import create_app, db
+from sqlalchemy.orm import scoped_session, sessionmaker
 
 
 @pytest.fixture(scope='module')
@@ -29,8 +30,8 @@ def client(test_app):
 def session(test_db):
     connection = test_db.engine.connect()
     transaction = connection.begin()
-    session = test_db.create_scoped_session(
-        options={"bind": connection, "binds": {}})
+    session_factory = sessionmaker(bind=connection)
+    session = scoped_session(session_factory)
     yield session
     session.close()
     transaction.rollback()

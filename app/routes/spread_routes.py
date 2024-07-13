@@ -2,15 +2,15 @@
 from flask import Blueprint, jsonify, current_app
 from app.models.spread_model import Spread
 from app.models.card_model import Card
-#from app.models.spread_layout_model import SpreadLayout
+from app.models.spread_layout_model import SpreadLayout
 import random
 import json
 
 
-spread_bp = Blueprint('spread', __name__)
+spread_api_bp = Blueprint('spread', __name__)
 
 
-@spread_bp.route('/spread/<int:spread_id>', methods=['GET'])
+@spread_api_bp.route('/spread/<int:spread_id>', methods=['GET'])
 def get_spread(spread_id):
     spread = Spread.query.get_or_404(spread_id)
 
@@ -18,11 +18,11 @@ def get_spread(spread_id):
 
     selected_cards = random.sample(all_cards, spread.number_of_cards)
 
-    layout_description = json.loads(spread.layout.layout_description)
+    layout_description = spread.layout.layout_description
 
     result = {
         'spread': spread.to_dict(),
-        'layout_name': spread.layout.layout_name,
+        'layout_name': spread.layout.name,
         'cards': [
             {
                 'position': i + 1,
