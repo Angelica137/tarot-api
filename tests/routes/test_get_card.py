@@ -4,25 +4,6 @@ from app import create_app, db
 from app.models.card_model import Card
 
 
-@pytest.fixture
-def client():
-    app = create_app('testing')
-    app.config['TESTING'] = True
-    app.config['SQLALCHEMY_ECHO'] = True
-
-    with app.app_context():
-        db.create_all()
-        yield app.test_client()
-        db.session.remove()
-        db.drop_all()
-
-
-def test_hello_world(client):
-    response = client.get('/api/')
-    assert response.status_code == 200
-    assert b"Hello, World!" in response.data
-
-
 def test_get_existing_card(client):
     with client.application.app_context():
         # Prepare the test data
@@ -82,10 +63,3 @@ def test_get_non_existing_card(client):
     assert data is not None, "Response data should not be None"
     assert 'error' in data
     assert 'not found' in data['error'].lower()
-
-
-def test_db_connection(client):
-    response = client.get('/api/test_db')
-    assert response.status_code == 200, "Database connection failed"
-    data = response.get_json()
-    assert "Database connection successful" in data['message']

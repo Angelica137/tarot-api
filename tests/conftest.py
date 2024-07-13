@@ -32,3 +32,16 @@ def session(test_db):
     session.close()
     transaction.rollback()
     connection.close()
+
+
+@pytest.fixture
+def client():
+    app = create_app('testing')
+    app.config['TESTING'] = True
+    app.config['SQLALCHEMY_ECHO'] = True
+
+    with app.app_context():
+        db.create_all()
+        yield app.test_client()
+        db.session.remove()
+        db.drop_all()
