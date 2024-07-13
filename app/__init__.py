@@ -28,7 +28,7 @@ def create_app(config_class=Config):
 
     from app.all_models import User, Reading, Spread, SpreadCard, Card, SpreadLayout
 
-    from app.routes.routes import bp as main_bp
-    app.register_blueprint(main_bp)
+    from app.routes.routes import api as api_blueprint
+    app.register_blueprint(api_blueprint, url_prefix='/api')
 
     return app
