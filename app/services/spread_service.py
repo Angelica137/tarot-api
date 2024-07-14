@@ -10,5 +10,8 @@ def get_spread(spread_id):
 
 
 def get_spread_data(spread_id):
-    spread = get_spread(spread_id)
-    return spread.to_dict()
+    try:
+        spread = get_spread(spread_id)
+        return spread.to_dict()
+    except Exception as e:
+        abort(500, description=f"Error getting spread data: {str(e)}")
