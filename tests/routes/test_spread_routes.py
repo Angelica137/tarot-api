@@ -28,6 +28,7 @@ def test_get_spread(client, session):
     session.add(spread)
 
     # Create some Cards
+    cards = []
     for i in range(10):  # Create more cards than needed for the spread
         card = Card(
             name=f'Test Card {i}',
@@ -49,6 +50,7 @@ def test_get_spread(client, session):
             questions_to_ask=json.dumps([f"Question {i}?", f"Another question {i}?"])
         )
         session.add(card)
+        cards.append(card)
 
     session.commit()
 
@@ -86,6 +88,18 @@ def test_get_spread(client, session):
         assert 'elemental' in card
         assert 'mythical_spiritual' in card
         assert 'questions_to_ask' in card
+
+        # Check that card data matches one of the created cards
+        card_found = False
+        for created_card in cards:
+            if (card['name'] == created_card.name and
+                card['number'] == created_card.number and
+                card['arcana'] == created_card.arcana and
+                card['suit'] == created_card.suit and
+                card['img'] == created_card.img):
+                card_found = True
+                break
+        assert card_found
 
     # Check that cards are randomly selected
     card_names = set(card_data['card']['name'] for card_data in data['cards'])

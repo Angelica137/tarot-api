@@ -25,6 +25,11 @@ class Reading(db.Model):
 
     user = db.relationship('User', back_populates='readings')
 
+    def __init__(self, question, user_id, spread_id):
+        self.question = question
+        self.user_id = user_id
+        self.spread_id = spread_id
+
     def __repr__(self):
         return (f"<Reading id={self.id}, question='{self.question[:20]}...', "
                 f"spread_id={self.spread_id}, "
@@ -37,11 +42,15 @@ class Reading(db.Model):
         return Reading(**data)
 
     def to_dict(self):
-        return {
+        data = {
             'id': self.id,
             'question': self.question,
             'spread_id': self.spread_id,
             'created_at': self.created_at,
             'updated_at': self.updated_at,
-            'user': self.user.to_dict(),
         }
+        if self.user:
+            data['user'] = self.user.to_dict()
+        else:
+            data['user'] = None
+        return data
