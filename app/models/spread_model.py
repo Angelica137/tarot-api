@@ -23,7 +23,11 @@ class Spread(db.Model):
             "id": self.id,
             "name": self.name,
             "number_of_cards": self.number_of_cards,
-            "layout_id": self.layout_id
+            "layout_id": self.layout_id,
+            "layout": {
+                "name": self.layout.name,
+                "description": self.layout.layout_description
+            } if self.layout else None
         }
 
     @staticmethod
