@@ -34,6 +34,9 @@ def create_app(config_class=Config):
     from app.routes.spread_routes import spread_api_bp
     app.register_blueprint(spread_api_bp, url_prefix='/api')
 
+    from app.routes.reading_route import reading_api_bp
+    app.register_blueprint(reading_api_bp, url_prefix='/api')
+
     if app.config['ENV'] == 'development':
         from app.routes.dev_routes import utility_bp
         app.register_blueprint(utility_bp, url_prefix='/dev')
