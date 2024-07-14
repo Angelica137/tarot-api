@@ -2,6 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from config import Config, TestingConfig, DevelopmentConfig, ProductionConfig
+from flask_jwt_extended import JWTManager
 
 
 db = SQLAlchemy()
@@ -10,6 +11,7 @@ migrate = Migrate()
 
 def create_app(config_class=Config):
     app = Flask(__name__)
+    jwt = JWTManager(app)
 
     if isinstance(config_class, str):
         if config_class == 'testing':
@@ -36,6 +38,9 @@ def create_app(config_class=Config):
 
     from app.routes.reading_route import reading_api_bp
     app.register_blueprint(reading_api_bp, url_prefix='/api')
+
+    from app.routes.auth_routes import auth_bp
+    app.register_blueprint(auth_bp, url_prefix='/api')
 
     if app.config['ENV'] == 'development':
         from app.routes.dev_routes import utility_bp

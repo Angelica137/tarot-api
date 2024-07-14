@@ -1,72 +1,112 @@
 from flask import Blueprint, jsonify, request
+from flask_jwt_extended import get_jwt_identity, jwt_required, create_access_token
 from app.services.spread_service import get_spread_data
 from app.models.reading_model import Reading
-from app.models.card_model import Card
 from app import db
-import random
 from datetime import datetime  # Import datetime
+from sqlalchemy.exc import SQLAlchemyError
+import logging
 
 reading_api_bp = Blueprint('reading', __name__)
 
 
+@reading_api_bp.route('/test', methods=['GET'])
+def test_route():
+    return jsonify({"message": "Test route works"}), 200
+
+
 @reading_api_bp.route('/readings', methods=['POST'])
-#@login_required
-def create_reading():
-    data = request.json
-    spread_id = data.get('spread_id')
-    question = data.get('question')  # Optional
+@jwt_required()
+def save_reading():
+    current_user_id = get_jwt_identity()
+    data = request.get_json()
+    print(f"Received data: {data}")
+    print(f"Current user ID: {current_user_id}")
 
-    if not spread_id:
-        return jsonify({'error': 'Spread ID is required'}), 400
+    if not data or 'question' not in data or 'spread_data' not in data:
+        print(f"Missing required data. Data received: {data}")
+        return jsonify({'error': 'Missing request data'}), 400
 
-    try:
-        spread_data = get_spread_data(spread_id)
-    except Exception as e:
-        return jsonify({'error': str(e)}), 404
+    # try:
+    #     spread_data = get_spread_data(data['spread_id'])
+    #     print(f"Spread data: {spread_data}")
+    # except Exception as e:
+    #     print(f"Error retrieving spread data: {str(e)}")
+    #     logging.error(f'Error retrieving spread data: {str(e)}')
+    #     return jsonify({'error': f'Error retrieving spread data: {str(e)}'}), 500
 
-    all_cards = Card.query.all()
-
-    if len(all_cards) < spread_data['number_of_cards']:
-        return jsonify({'error': 'Not enough cards in the deck'}), 400
-
-    selected_cards = random.sample(all_cards, spread_data['number_of_cards'])
-
-    reading = Reading(
-        question=question,
-        spread_id=spread_id,
-        created_at=datetime.utcnow(),
-        updated_at=datetime.utcnow(),
-        user_id=current_user.id
+    new_reading = Reading(
+        question=data['question'],
+        user_id=current_user_id,
+        spread_data=data['spread_data']
     )
 
-    db.session.add(reading)
-    db.session.commit()
+    try:
+        db.session.add(new_reading)
+        db.session.commit()
+    except SQLAlchemyError as e:
+        logging.error(f'Error saving reading: {str(e)}')
+        db.session.rollback()
+        return jsonify({'error': f'Error saving reading: {str(e)}'}), 500
 
-    # Create a reading response without storing in the database
-    reading_response = {
-        'spread': spread_data,
-        'question': question,
-        'cards': [
-            {
-                'id': card.id,
-                'name': card.name,
-                'arcana': card.arcana,
-                'suit': card.suit,
-                'img': card.img,
-                'fortune_telling': card.fortune_telling,
-                'keywords': card.keywords,
-                'meanings': card.meanings,
-                'archetype': card.archetype,
-                'hebrew_alphabet': card.hebrew_alphabet,
-                'numerology': card.numerology,
-                'elemental': card.elemental,
-                'mythical_spiritual': card.mythical_spiritual,
-                'questions_to_ask': card.questions_to_ask,
-                'affirmation': card.affirmation,
-                'astrology': card.astrology,
-                'position': index + 1
-            } for index, card in enumerate(selected_cards)
-        ]
-    }
+    return jsonify(
+        {"message": "Reading saved successfully", "reading_id": new_reading.id}
+    ), 201
 
-    return jsonify(reading_response), 200
+
+@reading_api_bp.route('/readings/', methods=['GET'])
+@jwt_required()
+def get_readings():
+    current_user_id = get_jwt_identity()
+    page = request.args.get('page', 1, type=int)
+    per_page = request.args.get('per_page', 10, type=int)
+
+    try:
+        readings = Reading.query.filter_by(user_id=current_user_id).paginate(
+            page=page, per_page=per_page, error_out=False
+        )
+    except SQLAlchemyError as e:
+        logging.error(f'Error retrieving readings: {str(e)}')
+        return jsonify({'error': f'Error retrieving readings: {str(e)}'}), 500
+
+    return jsonify({
+        'readings': [reading.to_dict() for reading in readings.items],
+        'total': readings.total,
+        'pages': readings.pages,
+        'current_page': page,
+        'has_next': readings.has_next,
+        'has_prev': readings.has_prev,
+    }), 200
+
+
+@reading_api_bp.route('/readings/<int:reading_id>', methods=['GET', 'DELETE'])
+@jwt_required()
+def get_reading(reading_id):
+    current_user_id = get_jwt_identity()
+    reading = Reading.query.filter_by(id=reading_id, user_id=current_user_id).first()
+
+    if not reading:
+        return jsonify({'error': 'Reading not found'}), 404
+
+    if request.method == 'GET':
+        return jsonify(reading.to_dict()), 200
+
+    if request.method == 'DELETE':
+        current_user_id = get_jwt_identity()
+        reading = Reading.query.filter_by(id=reading_id, user_id=current_user_id).first()
+
+        print(f"Attempting to delete reading {reading_id} for user {current_user_id}")
+
+        if not reading:
+            print(f"Reading {reading_id} not found for user {current_user_id}")
+            return jsonify({'error': 'Reading not found'}), 404
+
+        try:
+            db.session.delete(reading)
+            db.session.commit()
+            print(f"Reading {reading_id} deleted successfully")
+            return jsonify({'message': 'Reading deleted successfully'}), 200
+        except Exception as e:
+            print(f"Error deleting reading: {str(e)}")
+            db.session.rollback()
+            return jsonify({'error': f'Error deleting reading: {str(e)}'}), 500
