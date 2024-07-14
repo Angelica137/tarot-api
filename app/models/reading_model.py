@@ -7,7 +7,7 @@ class Reading(db.Model):
     __tablename__ = 'readings'
     id = db.Column(db.Integer, primary_key=True)
     question = db.Column(db.String(255), nullable=False)
-    # user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     spread_id = db.Column(
         db.Integer, db.ForeignKey('spreads.id'), nullable=False
     )
@@ -22,6 +22,8 @@ class Reading(db.Model):
         default=datetime.utcnow,
         onupdate=datetime.utcnow,
     )
+
+    user = db.relationship('User', back_populates='readings')
 
     def __repr__(self):
         return (f"<Reading id={self.id}, question='{self.question[:20]}...', "
@@ -40,5 +42,6 @@ class Reading(db.Model):
             'question': self.question,
             'spread_id': self.spread_id,
             'created_at': self.created_at,
-            'updated_at': self.updated_at
+            'updated_at': self.updated_at,
+            'user': self.user.to_dict(),
         }

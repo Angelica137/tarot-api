@@ -14,6 +14,7 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    readings = db.relationship('Reading', back_populates='user')
 
     def __init__(self, **kwargs):
         password = kwargs.pop('password', None)
@@ -50,5 +51,6 @@ class User(db.Model):
             'email': self.email,
             'role': self.role,
             'created_at': self.created_at.isoformat() if self.created_at else None,
-            'updated_at': self.updated_at.isoformat() if self.updated_at else None
+            'updated_at': self.updated_at.isoformat() if self.updated_at else None,
+            'readings': [reading.to_dict() for reading in self.readings]
         }

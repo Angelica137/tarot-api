@@ -13,7 +13,6 @@ spread_api_bp = Blueprint('spread', __name__)
 @spread_api_bp.route('/spread/<int:spread_id>', methods=['GET'])
 def get_spread(spread_id):
     spread = Spread.query.get_or_404(spread_id)
-
     all_cards = Card.query.all()
 
     selected_cards = random.sample(all_cards, spread.number_of_cards)
