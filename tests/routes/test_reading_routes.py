@@ -3,15 +3,7 @@ from app import db
 from flask import json
 from app.models.reading_model import Reading
 from app.services.spread_service import get_spread_data
-from flask_jwt_extended import get_jwt_identity, jwt_required, create_access_token
 from tests.conftest import clear_db
-
-
-@pytest.fixture
-def auth_headers():
-    # Mock JWT token - in a real scenario, you'd generate a valid token
-    access_token = create_access_token(identity=1)
-    return {'Authorization': f'Bearer {access_token}'}
 
 
 def test_simple_route(client):

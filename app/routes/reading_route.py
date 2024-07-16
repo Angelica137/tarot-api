@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from flask_jwt_extended import get_jwt_identity, jwt_required, create_access_token
+#from app.auth.auth import requires_premium
 from app.services.spread_service import get_spread_data
 from app.models.reading_model import Reading
 from app import db
@@ -10,13 +10,8 @@ import logging
 reading_api_bp = Blueprint('reading', __name__)
 
 
-@reading_api_bp.route('/test', methods=['GET'])
-def test_route():
-    return jsonify({"message": "Test route works"}), 200
-
-
 @reading_api_bp.route('/readings', methods=['POST'])
-@jwt_required()
+#@requires_premium
 def save_reading():
     current_user_id = get_jwt_identity()
     data = request.get_json()
@@ -55,7 +50,7 @@ def save_reading():
 
 
 @reading_api_bp.route('/readings/', methods=['GET'])
-@jwt_required()
+#@requires_premium
 def get_readings():
     current_user_id = get_jwt_identity()
     page = request.args.get('page', 1, type=int)
@@ -80,7 +75,7 @@ def get_readings():
 
 
 @reading_api_bp.route('/readings/<int:reading_id>', methods=['GET', 'DELETE'])
-@jwt_required()
+#@requires_premium
 def get_reading(reading_id):
     current_user_id = get_jwt_identity()
     reading = Reading.query.filter_by(id=reading_id, user_id=current_user_id).first()

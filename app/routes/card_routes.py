@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from flask import Blueprint, jsonify, request, current_app
+from flask import Blueprint, jsonify, request, current_app, session
+from app.auth.auth import requires_auth
 from app.models.card_model import Card
 from app.models.spread_model import Spread
 from app.models.spread_layout_model import SpreadLayout
@@ -15,7 +16,10 @@ def hello_world():
 
 
 @api.route('/card/<int:card_id>', methods=['GET'])
+#@requires_auth('get:card')
 def get_card(card_id):
+    current_app.logger.info(f"Session contents: {session}")
+
     current_app.logger.info(f"Attempting to retrieve card with id: {card_id}")
     card = Card.query.get(card_id)
     if card is None:
