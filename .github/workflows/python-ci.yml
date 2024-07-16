@@ -34,7 +34,7 @@ jobs:
         id: git-check
         run: |
           if [[ -n $(git status -s | grep -v "/__pycache__/") ]]; then
-            echo "modified=true" >> $GITHUB_OUTPUT
+            echo "modified=true" >> $GITHUB_ENV
             git diff
             exit 1
           fi
