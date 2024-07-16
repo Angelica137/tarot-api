@@ -40,7 +40,8 @@ def create_sample_data(session):
             arcana='Major' if i % 2 == 0 else 'Minor',
             suit='Wands' if i % 4 == 0 else 'Cups' if i % 4 == 1 else 'Swords' if i % 4 == 2 else 'Pentacles',
             img=f'test_image_{i}.jpg',
-            fortune_telling=json.dumps([f"Fortune {i}", f"Another fortune {i}"]),
+            fortune_telling=json.dumps([
+                f"Fortune {i}", f"Another fortune {i}"]),
             keywords=json.dumps([f"Keyword {i}", f"Another keyword {i}"]),
             meanings=json.dumps({
                 "light": [f"Light meaning {i}"],
@@ -51,7 +52,8 @@ def create_sample_data(session):
             numerology=f"Numerology {i}",
             elemental=f"Element {i}",
             mythical_spiritual=f"Myth {i}",
-            questions_to_ask=json.dumps([f"Question {i}?", f"Another question {i}?"])
+            questions_to_ask=json.dumps([
+                f"Question {i}?", f"Another question {i}?"])
         )
         session.add(card)
         cards.append(card)
@@ -123,6 +125,5 @@ def test_get_spread_data_success(test_app, session):
 
 def test_get_spread_data_error(test_app):
     with test_app.app_context():
-        # Call the function and check if it raises InternalServerError for non-existent spread
         with pytest.raises(InternalServerError):
             get_spread_data(999)  # Assume 999 is an ID that doesn't exist
