@@ -22,14 +22,6 @@ def save_reading():
         print(f"Missing required data. Data received: {data}")
         return jsonify({'error': 'Missing request data'}), 400
 
-    # try:
-    #     spread_data = get_spread_data(data['spread_id'])
-    #     print(f"Spread data: {spread_data}")
-    # except Exception as e:
-    #     print(f"Error retrieving spread data: {str(e)}")
-    #     logging.error(f'Error retrieving spread data: {str(e)}')
-    #     return jsonify({'error': f'Error retrieving spread data: {str(e)}'}), 500
-
     new_reading = Reading(
         question=data['question'],
         user_id=current_user_id,

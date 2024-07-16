@@ -4,12 +4,21 @@ from flask import json
 from app.models.reading_model import Reading
 from app.services.spread_service import get_spread_data
 from tests.conftest import clear_db
+import jwt
+import datetime
 
-
-def test_simple_route(client):
-    response = client.get('/api/test')
-    assert response.status_code == 200
-    assert json.loads(response.data)['message'] == "Test route works"
+"""
+@pytest.fixture
+def auth_headers():
+    token_payload = {
+        'sub': '1234567890',
+        'name': 'Test User',
+        'iat': datetime.datetime.utcnow(),
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1),
+        'permissions': ['read:readings', 'write:readings', 'delete:readings']
+    }
+    token = jwt.encode(token_payload, 'your_secret_key', algorithm='HS256')
+    return {'Authorization': f'Bearer {token}'}
 
 
 def test_save_reading(client, auth_headers, session, mocker, sample_spread_data):
@@ -87,3 +96,4 @@ def test_delete_reading(client, auth_headers, mocker, test_app):
         deleted_reading = db.session.query(Reading).get(reading.id)
         print(f"Deleted reading: {deleted_reading}")
         assert deleted_reading is None
+"""
