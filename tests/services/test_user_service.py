@@ -6,8 +6,8 @@ from app.models.user_model import User
 
 def test_get_or_create_user():
     with patch('app.services.user_service.User') as MockUser, \
-          patch('app.services.user_service.db.session.add') as mock_add, \
-          patch('app.services.user_service.db.session.commit') as mock_commit:
+         patch('app.services.user_service.db.session.add') as mock_add, \
+         patch('app.services.user_service.db.session.commit') as mock_commit:
 
         # Setup mock user
         mock_user = MagicMock(spec=User)
