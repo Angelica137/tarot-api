@@ -1,5 +1,4 @@
 from flask import Blueprint, jsonify, request
-#from app.auth.auth import requires_premium
 from app.services.spread_service import get_spread_data
 from app.models.reading_model import Reading
 from app import db
@@ -11,7 +10,6 @@ reading_api_bp = Blueprint('reading', __name__)
 
 
 @reading_api_bp.route('/readings', methods=['POST'])
-#@requires_premium
 def save_reading():
     current_user_id = get_jwt_identity()
     data = request.get_json()
@@ -42,7 +40,6 @@ def save_reading():
 
 
 @reading_api_bp.route('/readings/', methods=['GET'])
-#@requires_premium
 def get_readings():
     current_user_id = get_jwt_identity()
     page = request.args.get('page', 1, type=int)
@@ -67,9 +64,8 @@ def get_readings():
 
 
 @reading_api_bp.route('/readings/<int:reading_id>', methods=['GET', 'DELETE'])
-#@requires_premium
 def get_reading(reading_id):
-    #urrent_user_id = get_jwt_identity()
+    current_user_id = get_jwt_identity()
     reading = Reading.query.filter_by(id=reading_id, user_id=current_user_id).first()
 
     if not reading:

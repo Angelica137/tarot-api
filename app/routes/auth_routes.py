@@ -70,18 +70,20 @@ def callback():
         'user_id': userinfo['sub'],
     }
     session['access_token'] = token['access_token']
-    logging.info(f"Auth0 access token stored in session: {session['access_token'][:10]}...")  # Log first 10 characters
+    logging.info(
+        f"Auth0 access token stored in session: {session['access_token'][:10]}..."
+    )
 
     return redirect('/api/')
 
 
 @auth_bp.route('/logout')
 def logout():
-    logging.info("THIS IS MEEEEE LOGGING OUT")
+    logging.info("User logged out")
     session.clear()
 
     params = {
-        'returnTo': url_for('api.hello_world', _external=True),  # Assuming you have a route named 'hello_world' in your 'api' blueprint
+        'returnTo': url_for('api.api_info', _external=True),
         'client_id': current_app.config['AUTH0_CLIENT_ID']
     }
 

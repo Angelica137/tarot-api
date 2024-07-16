@@ -39,7 +39,7 @@ def create_app(config_class=Config):
 
     # Auth0 configuration
     app.config['AUTH0_DOMAIN'] = os.getenv("AUTH0_DOMAIN")
-    app.config['AUTH0_AUDIENCE'] = os.getenv("API_AUDIENCE")  # Make sure this is set in your .env file
+    app.config['AUTH0_AUDIENCE'] = os.getenv("API_AUDIENCE")
     app.config['AUTH0_CLIENT_ID'] = os.getenv("AUTH0_CLIENT_ID")
     app.config['AUTH0_CLIENT_SECRET'] = os.getenv("AUTH0_CLIENT_SECRET")
 
