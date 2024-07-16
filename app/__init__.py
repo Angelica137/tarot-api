@@ -59,7 +59,10 @@ def create_app(config_class=Config):
     from app.routes.auth_routes import auth_bp
     app.register_blueprint(auth_bp, url_prefix='/api')
 
-    if app.config['ENV'] == 'development':
+    if isinstance(config_class, str) and config_class in ['development', 'testing']:
+        from app.routes.dev_routes import utility_bp
+        app.register_blueprint(utility_bp, url_prefix='/dev')
+    elif config_class in [DevelopmentConfig, TestingConfig]:
         from app.routes.dev_routes import utility_bp
         app.register_blueprint(utility_bp, url_prefix='/dev')
 

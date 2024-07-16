@@ -11,13 +11,12 @@ api = Blueprint('api', __name__)
 
 
 @api.route('/')
-def hello_world():
-    return "Welcome, login to continue"
-
-
-@api.route('/')
-def home():
-    return "Welcome to the home page"
+def api_info():
+    return jsonify({
+        "name": "Tarot API",
+        "version": "1.0",
+        "description": "API for tarot card information"
+    })
 
 
 @api.route('/card/<int:card_id>', methods=['GET'])
@@ -33,15 +32,3 @@ def get_card(payload, card_id):
         return jsonify({"error": f"Card with id {card_id} not found"}), 404
     current_app.logger.info(f"Card found: {card}")
     return jsonify(card.to_dict()), 200
-
-
-@api.route('/test_db')
-def test_db():
-    try:
-        cards = Card.query.all()
-        return jsonify({
-            "message": f"Database connection successful. Found {len(cards)} cards."
-        }), 200
-    except Exception as e:
-        current_app.logger.error(f"Database error: {str(e)}")
-        return jsonify({"error": "Database connection failed"}), 500

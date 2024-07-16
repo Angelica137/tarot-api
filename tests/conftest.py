@@ -19,8 +19,6 @@ def test_app():
     app = create_app('testing')
     app.config['TESTING'] = True
     app.config['SQLALCHEMY_ECHO'] = True
-    # JWT settings are already in TestingConfig, but you can override them here if needed
-    # app.config['JWT_SECRET_KEY'] = 'test-jwt-secret-key'
 
     with app.app_context():
         db.create_all()
