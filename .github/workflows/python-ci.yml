@@ -33,7 +33,7 @@ jobs:
       - name: Check for modified files (excluding __pycache__)
         id: git-check
         run: |
-          if [[ -n $(git status -s | grep -v "__pycache__") ]]; then
+          if [[ -n $(git status -s | grep -v "/__pycache__/") ]]; then
             echo "modified=true" >> $GITHUB_OUTPUT
             git diff
             exit 1
