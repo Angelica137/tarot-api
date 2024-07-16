@@ -25,15 +25,18 @@ def test_get_existing_card(client, mock_auth, mock_token):
             "arcana": "Major Arcana",
             "suit": "Trump",
             "img": "m00.jpg",
-            "fortune_telling": json.dumps(["Watch for new projects and new beginnings"]),
+            "fortune_telling": json.dumps(
+                ["Watch for new projects and new beginnings"]),
             "keywords": json.dumps(["freedom"]),
-            "meanings": json.dumps({"light": ["Freeing yourself from limitation"]}),
+            "meanings": json.dumps(
+                {"light": ["Freeing yourself from limitation"]}),
             "archetype": "The Divine Madman",
             "hebrew_alphabet": "Aleph/Ox/1",
             "numerology": "0 (off the scale; pure potential)",
             "elemental": "Air",
             "mythical_spiritual": "Adam before the fall...",
-            "questions_to_ask": json.dumps(["What would I do if I felt free to take a leap?"]),
+            "questions_to_ask": json.dumps(
+                ["What would I do if I felt free to take a leap?"]),
             "affirmation": "I am open to all possibilities.",
             "astrology": "Uranus, Air"
         }
@@ -59,10 +62,13 @@ def test_get_existing_card(client, mock_auth, mock_token):
         assert data['number'] == '0'
         assert data['arcana'] == 'Major Arcana'
         assert data['suit'] == 'Trump'
-        assert data['fortune_telling'] == ["Watch for new projects and new beginnings"]
+        assert data['fortune_telling'] == [
+            "Watch for new projects and new beginnings"]
         assert data['keywords'] == ["freedom"]
-        assert data['meanings'] == {"light": ["Freeing yourself from limitation"]}
-        assert data['questions_to_ask'] == ["What would I do if I felt free to take a leap?"]
+        assert data['meanings'] == {
+            "light": ["Freeing yourself from limitation"]}
+        assert data['questions_to_ask'] == [
+            "What would I do if I felt free to take a leap?"]
 
 
 def test_get_non_existing_card(client, mock_auth, mock_token):

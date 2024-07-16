@@ -80,7 +80,9 @@ def get_reading(reading_id):
         reading = Reading.query.filter_by(
             id=reading_id, user_id=current_user_id).first()
 
-        print(f"Attempting to delete reading {reading_id} for user {current_user_id}")
+        print(
+            f"Attempting to delete reading {reading_id} for user {current_user_id}"
+        )
 
         if not reading:
             print(f"Reading {reading_id} not found for user {current_user_id}")

@@ -21,9 +21,11 @@ def auth_headers():
     return {'Authorization': f'Bearer {token}'}
 
 
-def test_save_reading(client, auth_headers, session, mocker, sample_spread_data):
+def test_save_reading(client, auth_headers, session, mocker,
+    sample_spread_data):
     mocker.patch('flask_jwt_extended.get_jwt_identity', return_value=1)
-    mocker.patch('app.services.spread_service.get_spread_data', return_value=sample_spread_data)
+    mocker.patch('app.services.spread_service.get_spread_data', return_value=
+    sample_spread_data)
 
     response = client.post('/api/readings', json={
         'question': 'Test question',
@@ -45,11 +47,13 @@ def test_get_readings(client, auth_headers, session, mocker):
 
     # Add some test readings
     for i in range(15):
-        reading = Reading(question=f'Test question {i}', user_id=1, spread_data={'mock': 'data'})
+        reading = Reading(question=f'Test question {i}', user_id=1,
+        spread_data={'mock': 'data'})
         session.add(reading)
     session.commit()
 
-    response = client.get('/api/readings/', headers=auth_headers, follow_redirects=True)
+    response = client.get('/api/readings/', headers=auth_headers,
+    follow_redirects=True)
 
     assert response.status_code == 200
     data = json.loads(response.data)
@@ -64,7 +68,8 @@ def test_get_readings(client, auth_headers, session, mocker):
 def test_get_reading(client, auth_headers, session, mocker):
     mocker.patch('flask_jwt_extended.get_jwt_identity', return_value=1)
 
-    reading = Reading(question='Test question', user_id=1, spread_data={'mock': 'data'})
+    reading = Reading(question='Test question', user_id=1, spread_data=
+    {'mock': 'data'})
     session.add(reading)
     session.commit()
 
@@ -79,11 +84,13 @@ def test_delete_reading(client, auth_headers, mocker, test_app):
     mocker.patch('flask_jwt_extended.get_jwt_identity', return_value=1)
 
     with test_app.app_context():
-        reading = Reading(question='Test question', user_id=1, spread_data={'mock': 'data'})
+        reading = Reading(question='Test question', user_id=1, spread_data=
+        {'mock': 'data'})
         db.session.add(reading)
         db.session.commit()
 
-        response = client.delete(f'/api/readings/{reading.id}', headers=auth_headers)
+        response = client.delete(f'/api/readings/{reading.id}',
+        headers=auth_headers)
 
         print(f"Response status: {response.status_code}")
         print(f"Response data: {response.data}")
