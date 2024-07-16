@@ -21,9 +21,10 @@ def home():
 
 
 @api.route('/card/<int:card_id>', methods=['GET'])
-@requires_auth
-def get_card(card_id):
+@requires_auth('get:card')
+def get_card(payload, card_id):
     current_app.logger.info(u"\U0001F7E2", f"Session contents: {session}")
+    current_app.logger.info(f"Payload received: {payload}")
 
     current_app.logger.info(f"Attempting to retrieve card with id: {card_id}")
     card = Card.query.get(card_id)

@@ -5,7 +5,7 @@ from app import create_app, db
 def test_hello_world(client):
     response = client.get('/api/')
     assert response.status_code == 200
-    assert b"Hello, World!" in response.data
+    assert b"Welcome, login to continue" in response.data
 
 
 def test_db_connection(client):

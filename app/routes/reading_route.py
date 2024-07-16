@@ -77,7 +77,7 @@ def get_readings():
 @reading_api_bp.route('/readings/<int:reading_id>', methods=['GET', 'DELETE'])
 #@requires_premium
 def get_reading(reading_id):
-    current_user_id = get_jwt_identity()
+    #urrent_user_id = get_jwt_identity()
     reading = Reading.query.filter_by(id=reading_id, user_id=current_user_id).first()
 
     if not reading:

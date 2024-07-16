@@ -152,47 +152,27 @@ def verify_decode_jwt(token):
     }, 400)
 
 
-def requires_auth(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        token = get_token_auth_header()
-        jsonurl = urlopen(f'https://{AUTH0_DOMAIN}/.well-known/jwks.json')
-        jwks = json.loads(jsonurl.read())
-        unverified_header = jwt.get_unverified_header(token)
-        rsa_key = {}
-        for key in jwks['keys']:
-            if key['kid'] == unverified_header['kid']:
-                rsa_key = {
-                    'kty': key['kty'],
-                    'kid': key['kid'],
-                    'use': key['use'],
-                    'n': key['n'],
-                    'e': key['e']
-                }
-        if rsa_key:
+def requires_auth(permission=''):
+    def requires_auth_decorator(f):
+        @wraps(f)
+        def wrapper(*args, **kwargs):
+            print(f"Checking permission: {permission}")
+            token = get_token_auth_header()
             try:
-                payload = jwt.decode(
-                    token,
-                    rsa_key,
-                    algorithms=ALGORITHMS,
-                    audience=API_AUDIENCE,
-                    issuer=f'https://{AUTH0_DOMAIN}/'
-                )
-            except jwt.ExpiredSignatureError:
-                return jsonify({"code": "token_expired",
-                                "description": "token is expired"}), 401
-            except jwt.JWTClaimsError:
-                return jsonify({"code": "invalid_claims",
-                                "description":
-                                    "incorrect claims,"
-                                    "please check the audience and issuer"}), 401
-            except Exception:
-                return jsonify({"code": "invalid_header",
-                                "description":
-                                    "Unable to parse authentication"
-                                    " token."}), 401
+                payload = verify_decode_jwt(token)
+                print(f"JWT payload: {payload}")
+            except Exception as e:
+                print(f"JWT verification failed: {e}")
+                abort(401)
 
-            return f(*args, **kwargs)
-        return jsonify({"code": "invalid_header",
-                        "description": "Unable to find appropriate key"}), 401
-    return decorated
+            try:
+                check_permissions(permission, payload)
+                print("Permission check passed")
+            except Exception as e:
+                print(f"Permission check failed: {e}")
+                abort(403)
+
+            return f(payload, *args, **kwargs)
+
+        return wrapper
+    return requires_auth_decorator
