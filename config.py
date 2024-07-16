@@ -12,6 +12,9 @@ class Config:
         'DATABASE_URL') or 'postgresql:///oracle'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    SESSION_TYPE = 'filesystem'
+    SESSION_KEY = os.environ.get('SESSION_KEY', 'your-secret-key')
+
 
 class TestingConfig(Config):
     TESTING = True

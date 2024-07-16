@@ -4,11 +4,6 @@ from app.models.card_model import Card
 utility_bp = Blueprint('utility', __name__)
 
 
-@utility_bp.route('/')
-def hello_world():
-    return "Hello, World!"
-
-
 @utility_bp.route('/test_db')
 def test_db():
     try:

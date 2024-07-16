@@ -9,60 +9,101 @@ def sample_reading_data():
     return {
         "id": 1,
         "question": "What do I need to know?",
-        # "user_id": 1,
-        "spread_id": 1,
+        "user_id": 1,
+        "spread_data": 1,
         "created_at": datetime(2021, 1, 1, 12, 0, 0),
         "updated_at": datetime(2021, 1, 1, 12, 0, 0),
     }
 
 
-def test_new_reading(sample_reading_data):
+def test_new_reading(session):
     """
     GIVEN a Reading model
     WHEN a new Reading is created
-    THEN check the id, question, user_id, spread_id, created_at, and updated_at are defined correctly
+    THEN check the question, user_id, spread_data, created_at, and updated_at
+    are defined correctly
     """
-    reading = Reading(**sample_reading_data)
-    assert reading.id == 1
-    assert reading.question == "What do I need to know?"
-    assert reading.spread_id == 1
-    assert reading.created_at == datetime(2021, 1, 1, 12, 0, 0)
-    assert reading.updated_at == datetime(2021, 1, 1, 12, 0, 0)
+    question = 'What do I need to know?'
+    user_id = 1
+    spread_data = 1
+    reading = Reading(
+        question=question, user_id=user_id, spread_data=spread_data)
+
+    session.add(reading)
+    session.commit()
+
+    assert reading.id is not None
+    assert reading.question == question
+    assert reading.user_id == user_id
+    assert reading.spread_data == spread_data
+    assert reading.created_at is not None
+    assert reading.updated_at is not None
 
 
-def test_reading_representation(sample_reading_data):
+def test_reading_representation(session):
     """
     GIVEN a Reading model
     WHEN the representation of the model is requested
-    THEN check the id, question, user_id, spread_id, created_at, and
-    updated_at are returned
+    THEN check the representation string contains relevant information
     """
-    reading = Reading(**sample_reading_data)
-    expected_repr = ("<Reading id=1, question='What do I need to kn...', "
-                     "spread_id=1, created_at='2021-01-01 12:00:00', "
-                     "updated_at='2021-01-01 12:00:00'>")
+    question = 'What do I need to know?'
+    user_id = 1
+    spread_data = 1
+    reading = Reading(
+        question=question, user_id=user_id, spread_data=spread_data)
+
+    session.add(reading)
+    session.commit()
+
+    expected_repr = f"<Reading id={reading.id}, question='{question[:20]}...', spread_data={spread_data}, created_at='{reading.created_at.strftime('%Y-%m-%d %H:%M:%S')}', updated_at='{reading.updated_at.strftime('%Y-%m-%d %H:%M:%S')}'>"
+
     assert repr(reading) == expected_repr
 
 
-def test_reading_from_dict(sample_reading_data):
+def test_reading_from_dict(session):
     """
     GIVEN a Reading model
     WHEN the from_dict() function is called on the model
     THEN check that the model is created correctly
     """
-    reading = Reading.from_dict(sample_reading_data)
-    assert isinstance(reading, Reading)
-    assert reading.question == "What do I need to know?"
-    assert reading.spread_id == 1
-    assert reading.created_at == datetime(2021, 1, 1, 12, 0, 0)
-    assert reading.updated_at == datetime(2021, 1, 1, 12, 0, 0)
+    data = {
+        'question': 'What do I need to know?',
+        'user_id': 1,
+        'spread_data': 1,
+    }
+    reading = Reading.from_dict(data)
+
+    session.add(reading)
+    session.commit()
+
+    assert reading.id is not None
+    assert reading.question == data['question']
+    assert reading.user_id == data['user_id']
+    assert reading.spread_data == data['spread_data']
+    assert reading.created_at is not None
+    assert reading.updated_at is not None
 
 
-def test_reading_to_dict(sample_reading_data):
+def test_reading_to_dict(session):
     """
     GIVEN a Reading model
     WHEN the to_dict() function is called on the model
     THEN check that the model is converted to a dictionary correctly
     """
-    reading = Reading(**sample_reading_data)
-    assert reading.to_dict() == sample_reading_data
+    question = 'What do I need to know?'
+    user_id = 1
+    spread_data = 1
+    reading = Reading(
+        question=question, user_id=user_id, spread_data=spread_data)
+
+    session.add(reading)
+    session.commit()
+
+    reading_dict = reading.to_dict()
+
+    assert reading_dict['id'] == reading.id
+    assert reading_dict['question'] == question
+    assert reading_dict['spread_data'] == spread_data
+    assert reading_dict['created_at'] == reading.created_at
+    assert reading_dict['updated_at'] == reading.updated_at
+    assert reading_dict['user'] is None  # Since user is not set in the test

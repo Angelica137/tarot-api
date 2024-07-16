@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-from flask import Blueprint, jsonify, current_app
+from flask import Blueprint, jsonify, request
+from app.auth.auth import requires_auth
+from app.services.spread_service import get_spread_data
 from app.models.spread_model import Spread
 from app.models.card_model import Card
 from app.models.spread_layout_model import SpreadLayout
@@ -10,26 +12,15 @@ import json
 spread_api_bp = Blueprint('spread', __name__)
 
 
-@spread_api_bp.route('/spread/<int:spread_id>', methods=['GET'])
+@spread_api_bp.route('/spread/<int:spread_id>', methods=['GET', 'POST'])
+@requires_auth
 def get_spread(spread_id):
-    spread = Spread.query.get_or_404(spread_id)
+    if request.method == 'GET':
+        return jsonify(get_spread_data(spread_id)), 200
 
-    all_cards = Card.query.all()
-
-    selected_cards = random.sample(all_cards, spread.number_of_cards)
-
-    layout_description = spread.layout.layout_description
-
-    result = {
-        'spread': spread.to_dict(),
-        'layout_name': spread.layout.name,
-        'cards': [
-            {
-                'position': i + 1,
-                'description': layout_description[i],
-                'card': card.to_dict()
-            } for i, card in enumerate(selected_cards)
-        ]
-    }
-
-    return jsonify(result), 200
+    elif request.method == 'POST':
+        data = request.json
+        question = data.get('question')
+        spread_data = get_spread_data(spread_id)
+        spread_data['question'] = question if question else None
+        return jsonify(spread_data), 200
