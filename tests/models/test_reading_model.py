@@ -20,12 +20,14 @@ def test_new_reading(session):
     """
     GIVEN a Reading model
     WHEN a new Reading is created
-    THEN check the question, user_id, spread_data, created_at, and updated_at are defined correctly
+    THEN check the question, user_id, spread_data, created_at, and updated_at
+    are defined correctly
     """
     question = 'What do I need to know?'
     user_id = 1
     spread_data = 1
-    reading = Reading(question=question, user_id=user_id, spread_data=spread_data)
+    reading = Reading(
+        question=question, user_id=user_id, spread_data=spread_data)
 
     session.add(reading)
     session.commit()
@@ -47,7 +49,8 @@ def test_reading_representation(session):
     question = 'What do I need to know?'
     user_id = 1
     spread_data = 1
-    reading = Reading(question=question, user_id=user_id, spread_data=spread_data)
+    reading = Reading(
+        question=question, user_id=user_id, spread_data=spread_data)
 
     session.add(reading)
     session.commit()
@@ -90,7 +93,8 @@ def test_reading_to_dict(session):
     question = 'What do I need to know?'
     user_id = 1
     spread_data = 1
-    reading = Reading(question=question, user_id=user_id, spread_data=spread_data)
+    reading = Reading(
+        question=question, user_id=user_id, spread_data=spread_data)
 
     session.add(reading)
     session.commit()
