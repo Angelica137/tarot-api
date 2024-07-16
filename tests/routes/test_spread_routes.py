@@ -51,7 +51,7 @@ def test_get_spread(client, session):
             numerology=f"Numerology {i}",
             elemental=f"Element {i}",
             mythical_spiritual=f"Myth {i}",
-            questions_to_ask=json.dumps([f"Question {i}?", f"Another question 
+            questions_to_ask=json.dumps([f"Question {i}?", f"Another question
             {i}?"])
         )
         session.add(card)

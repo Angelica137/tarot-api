@@ -10,7 +10,8 @@ def test_404_error(client):
 
     if data is None:
         print(
-            "Response is not JSON. Content type:", response.headers.get('Content-Type')
+            "Response is not JSON. Content type:", response.headers.get(
+                'Content-Type')
         )
         assert 'not found' in response.data.decode().lower()
     else:
