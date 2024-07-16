@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
 import pytest
 from app.models.user_model import User
 from datetime import datetime, timedelta
+
 
 @pytest.fixture
 def sample_user_data():
@@ -11,6 +11,7 @@ def sample_user_data():
         'email': 'john.doe@example.com',
         'role': 'user'
     }
+
 
 def test_new_user(sample_user_data):
     """
@@ -32,10 +33,12 @@ def test_new_user(sample_user_data):
     assert before <= user.updated_at <= after
     assert abs(user.created_at - user.updated_at) < timedelta(seconds=1)
 
+
 def test_user_repr(sample_user_data):
     user = User(**sample_user_data)
     expected_repr = "<User(id=None, name='John Doe', email='john.doe@example.com', role='user', auth0_user_id='auth0|123456')>"
     assert repr(user) == expected_repr
+
 
 def test_user_from_dict(sample_user_data):
     user = User.from_dict(sample_user_data)
@@ -47,6 +50,7 @@ def test_user_from_dict(sample_user_data):
     assert user.created_at is not None
     assert user.updated_at is not None
 
+
 def test_user_to_dict(sample_user_data):
     user = User(**sample_user_data)
     user_dict = user.to_dict()
@@ -57,5 +61,3 @@ def test_user_to_dict(sample_user_data):
 
     assert isinstance(user_dict['created_at'], str)
     assert isinstance(user_dict['updated_at'], str)
-
-# Since password related methods are removed, we don't need tests for password setting or checking

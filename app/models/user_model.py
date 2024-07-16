@@ -21,8 +21,10 @@ class User(db.Model):
             self.updated_at = datetime.utcnow()
 
     def __repr__(self):
-        return (f"<User(id={self.id}, name='{self.name}', email='{self.email}', "
-                f"role='{self.role}', auth0_user_id='{self.auth0_user_id}')>")
+        return (
+            f"<User(id={self.id}, name='{self.name}', email='{self.email}', "
+            f"role='{self.role}', auth0_user_id='{self.auth0_user_id}')>"
+        )
 
     @classmethod
     def from_dict(cls, data):
