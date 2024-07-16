@@ -20,9 +20,14 @@ def test_get_or_create_user():
         with patch('app.services.user_service.User.query') as mock_query:
             mock_query.filter_by.return_value.first.return_value = None
 
-            user = UserService.get_or_create_user('auth0|123', 'Test User', 'test@example.com')
+            user = UserService.get_or_create_user(
+                'auth0|123', 'Test User', 'test@example.com')
 
-            MockUser.assert_called_once_with(auth0_user_id='auth0|123', name='Test User', email='test@example.com')
+            MockUser.assert_called_once_with(
+                auth0_user_id='auth0|123',
+                name='Test User',
+                email='test@example.com'
+            )
             mock_add.assert_called_once_with(mock_user)
             mock_commit.assert_called_once()
             assert user.auth0_user_id == 'auth0|123'
@@ -38,7 +43,8 @@ def test_get_or_create_user():
         with patch('app.services.user_service.User.query') as mock_query:
             mock_query.filter_by.return_value.first.return_value = mock_user
 
-            user = UserService.get_or_create_user('auth0|123', 'Test User', 'test@example.com')
+            user = UserService.get_or_create_user(
+                'auth0|123', 'Test User', 'test@example.com')
 
             MockUser.assert_not_called()
             mock_add.assert_not_called()
