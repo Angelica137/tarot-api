@@ -12,13 +12,18 @@ api = Blueprint('api', __name__)
 
 @api.route('/')
 def hello_world():
-    return "Hello, World!"
+    return "Welcome, login to continue"
+
+
+@api.route('/')
+def home():
+    return "Welcome to the home page"
 
 
 @api.route('/card/<int:card_id>', methods=['GET'])
-#@requires_auth('get:card')
+@requires_auth
 def get_card(card_id):
-    current_app.logger.info(f"Session contents: {session}")
+    current_app.logger.info(u"\U0001F7E2", f"Session contents: {session}")
 
     current_app.logger.info(f"Attempting to retrieve card with id: {card_id}")
     card = Card.query.get(card_id)

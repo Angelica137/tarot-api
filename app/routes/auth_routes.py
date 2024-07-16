@@ -11,6 +11,7 @@ auth_bp = Blueprint('auth', __name__)
 
 logging.basicConfig(level=logging.INFO)
 
+
 def get_auth0_client():
     return oauth.register(
         'auth0',
@@ -25,24 +26,42 @@ def get_auth0_client():
         server_metadata_url=f'https://{current_app.config["AUTH0_DOMAIN"]}/.well-known/openid-configuration'
     )
 
+
 @auth_bp.route('/login')
 def login():
     auth0 = get_auth0_client()
-    return auth0.authorize_redirect(redirect_uri=url_for('auth.callback', _external=True))
+    logging.info("User is attempting to log in.")
+    logging.info(f"Auth0 client: {auth0}")
+
+    # Create a state parameter to help prevent CSRF attacks
+    session['state'] = os.urandom(24).hex()
+
+    return auth0.authorize_redirect(
+        redirect_uri=url_for('auth.callback', _external=True),
+        audience=current_app.config['AUTH0_AUDIENCE'],
+        state=session['state']
+    )
+
 
 @auth_bp.route('/callback')
 def callback():
     auth0 = get_auth0_client()
+
+    # Verify the state to protect against CSRF attacks
+    if request.args.get('state') != session['state']:
+        logging.error("Invalid state. Possible CSRF attack.")
+
     token = auth0.authorize_access_token()
-    
+    logging.info("User logged in")
+
     # Log the entire token object
     logging.info(f"Full Auth0 token object: {json.dumps(token, indent=2)}")
-    
+
     # Log specific parts of the token
     logging.info(f"Access token: {token.get('access_token', 'Not found')}")
     logging.info(f"ID token: {token.get('id_token', 'Not found')}")
     logging.info(f"Refresh token: {token.get('refresh_token', 'Not found')}")
-    
+
     resp = auth0.get('userinfo')
     userinfo = resp.json()
 
@@ -58,6 +77,7 @@ def callback():
 
 @auth_bp.route('/logout')
 def logout():
+    logging.info("THIS IS MEEEEE LOGGING OUT")
     session.clear()
 
     params = {
