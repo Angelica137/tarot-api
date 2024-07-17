@@ -30,6 +30,13 @@ def get_spread(payload, spread_id):
 @spread_api_bp.route('/spread/<int:spread_id>', methods=['POST'])
 @requires_auth('post:spread')
 def save_reading(payload, spread_id):
+    auth0_user_id = payload.get('sub')
+
+    if not auth0_user_id:
+        return jsonify({
+            'message': 'User ID not found in JWT'
+        }), 401
+
     spread_data = get_spread_data(spread_id)
     question = request.json.get('question')
 
@@ -38,7 +45,7 @@ def save_reading(payload, spread_id):
 
     new_reading = Reading(
         question=question,
-        user_id=current_user.id,
+        auth0_user_id=auth0_user_id,
         spread_data=spread_data
     )
 
