@@ -42,15 +42,11 @@ class Reading(db.Model):
         return Reading(**data)
 
     def to_dict(self):
-        data = {
+        return {
             'id': self.id,
             'question': self.question,
+            'auth0_user_id': self.auth0_user_id,
             'spread_data': self.spread_data,
-            'created_at': self.created_at,
-            'updated_at': self.updated_at,
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'updated_at': self.updated_at.isoformat() if self.updated_at else None
         }
-        if self.user:
-            data['user'] = self.user.to_dict()
-        else:
-            data['user'] = None
-        return data

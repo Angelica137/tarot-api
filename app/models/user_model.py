@@ -12,7 +12,7 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    readings = db.relationship('Reading', back_populates='user')
+    readings = db.relationship('Reading', back_populates='user', lazy='dynamic')
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
@@ -40,5 +40,5 @@ class User(db.Model):
             'role': self.role,
             'created_at': self.created_at.isoformat() if self.created_at else None,
             'updated_at': self.updated_at.isoformat() if self.updated_at else None,
-            'readings': [reading.to_dict() for reading in self.readings]
+            # We're not including readings here to avoid potential recursion issues
         }

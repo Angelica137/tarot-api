@@ -38,21 +38,29 @@ def save_reading(payload, spread_id):
         }), 401
 
     spread_data = get_spread_data(spread_id)
+    if not spread_data:
+        return jsonify({'error': 'Spread not found'}), 404
+
     question = request.json.get('question')
 
     if question:
         spread_data['question'] = question
 
-    new_reading = Reading(
-        question=question,
-        auth0_user_id=auth0_user_id,
-        spread_data=spread_data
-    )
+    try:
+        new_reading = Reading(
+            question=question,
+            auth0_user_id=auth0_user_id,
+            spread_data=spread_data
+        )
+        db.session.add(new_reading)
+        db.session.commit()
 
-    db.session.add(new_reading)
-    db.session.commit()
+        return jsonify({
+            'message': 'Reading saved successfully',
+            'reading_id': new_reading.id
+        }), 201
 
-    return jsonify({
-        'message': 'Reading saved successfully',
-        'reading_id': new_reading.id
-    }), 201
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error saving reading: {str(e)}")
+        return jsonify({'error': 'An error occurred while saving the reading'}), 500
