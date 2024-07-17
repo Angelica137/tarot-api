@@ -106,27 +106,27 @@ def seed_database():
             spread_data={
                     "spread_id": past_present_future_spread.id,
                     "cards": [
-                        {
-                            "position": "Past",
-                            "card_id": 1,
-                            "name": "The Fool",
-                            "meaning": "New beginnings"
-                        },
-                        {
-                            "position": "Present",
-                            "card_id": 10,
-                            "name": "Wheel of Fortune",
-                            "meaning": "Change"
-                        },
-                        {
-                            "position": "Future",
-                            "card_id": 21,
-                            "name": "The World",
-                            "meaning": "Completion"
-                        }
-                    ]
-                }
-            ),
+                            {
+                                "position": "Past",
+                                "card_id": 1,
+                                "name": "The Fool",
+                                "meaning": "New beginnings"
+                            },
+                            {
+                                "position": "Present",
+                                "card_id": 10,
+                                "name": "Wheel of Fortune",
+                                "meaning": "Change"
+                            },
+                            {
+                                "position": "Future",
+                                "card_id": 21,
+                                "name": "The World",
+                                "meaning": "Completion"
+                            }
+                        ]
+                    }
+                ),
         Reading(
             question="How's my love life?",
             user_id=user.id,
