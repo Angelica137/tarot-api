@@ -22,14 +22,22 @@ def create_sample_data(session):
     )
     session.add(layout)
     session.flush()  # This assigns an ID to layout
+    print(f"Created layout with ID: {layout.id}")
 
     # Create a Spread
     spread = Spread(
         name="Past, Present, Future",
         number_of_cards=3,
-        layout_id=layout.id
+        layout=layout,
+        position_meanings={
+            "Past": "Past events influencing the situation",
+            "Present": "Current state of affairs",
+            "Future": "Potential outcomes"
+        }
     )
     session.add(spread)
+    session.flush()  # This assigns an ID to spread
+    print(f"Created spread with ID: {spread.id}")
 
     # Create some Cards
     cards = []
@@ -59,6 +67,7 @@ def create_sample_data(session):
         cards.append(card)
 
     session.commit()
+    print(f"Committed changes. Spread ID: {spread.id}")
 
     return spread.id
 
@@ -66,6 +75,7 @@ def create_sample_data(session):
 def test_get_spread_data_success(test_app, session):
     with test_app.app_context():
         spread_id = create_sample_data(session)
+        print(f"Spread ID returned from create_sample_data: {spread_id}")
 
         # Call the function
         result = get_spread_data(spread_id)
