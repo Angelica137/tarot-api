@@ -27,7 +27,10 @@ def test_new_reading(session):
     auth0_user_id = 'auth0|123'
     spread_data = 1
     reading = Reading(
-        question=question, auth0_user_id=auth0_user_id, spread_data=spread_data)
+        question=question,
+        auth0_user_id=auth0_user_id,
+        spread_data=spread_data
+    )
 
     session.add(reading)
     session.commit()
@@ -107,5 +110,7 @@ def test_reading_to_dict(session):
     assert reading_dict['id'] == reading.id
     assert reading_dict['question'] == question
     assert reading_dict['spread_data'] == spread_data
-    assert datetime.fromisoformat(reading_dict['created_at']) == reading.created_at
-    assert datetime.fromisoformat(reading_dict['updated_at']) == reading.updated_at
+    assert datetime.fromisoformat(
+        reading_dict['created_at']) == reading.created_at
+    assert datetime.fromisoformat(
+        reading_dict['updated_at']) == reading.updated_at
