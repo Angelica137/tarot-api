@@ -16,6 +16,7 @@ Flask-Login==0.6.3
 Flask-Migrate==4.0.7
 Flask-SQLAlchemy==3.0.5
 greenlet==3.0.3
+gunicorn==22.0.0
 httpie==3.2.2
 idna==3.7
 importlib-metadata==6.7.0
