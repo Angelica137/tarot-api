@@ -14,6 +14,13 @@ class Spread(db.Model):
         nullable=False
     )
     layout = db.relationship('SpreadLayout')
+    position_meanings = db.Column(db.JSON, nullable=False)
+
+    def __init__(self, name, number_of_cards, layout, position_meanings):
+        self.name = name
+        self.number_of_cards = number_of_cards
+        self.layout = layout
+        self.position_meanings = position_meanings
 
     def __repr__(self):
         return f"<Spread '{self.name}' with {self.number_of_cards} cards>"

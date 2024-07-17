@@ -13,7 +13,6 @@ spread_api_bp = Blueprint('spread', __name__)
 
 
 @spread_api_bp.route('/spread/<int:spread_id>', methods=['GET', 'POST'])
-@requires_auth
 def get_spread(spread_id):
     if request.method == 'GET':
         return jsonify(get_spread_data(spread_id)), 200

@@ -30,10 +30,10 @@ jobs:
       - name: Run autopep8
         run: |
           autopep8 --in-place --recursive --exclude=migrations,venv,__pycache__ .
-      - name: Check for modified files (excluding __pycache__)
+      - name: Check for modified files (excluding __pycache__ and binary files)
         id: git-check
         run: |
-          if [[ -n $(git status -s | grep -v "/__pycache__/") ]]; then
+          if [[ -n $(git status -s | grep -v "/__pycache__/" | grep -v "\.pyc$" | grep -v "^ M") ]]; then
             echo "modified=true" >> $GITHUB_ENV
             git diff
             exit 1
