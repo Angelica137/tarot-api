@@ -9,7 +9,7 @@ def sample_reading_data():
     return {
         "id": 1,
         "question": "What do I need to know?",
-        "user_id": 1,
+        "auth0_user_id": "auth0|123",
         "spread_data": 1,
         "created_at": datetime(2021, 1, 1, 12, 0, 0),
         "updated_at": datetime(2021, 1, 1, 12, 0, 0),
@@ -24,17 +24,17 @@ def test_new_reading(session):
     are defined correctly
     """
     question = 'What do I need to know?'
-    user_id = 1
+    auth0_user_id = 'auth0|123'
     spread_data = 1
     reading = Reading(
-        question=question, user_id=user_id, spread_data=spread_data)
+        question=question, auth0_user_id=auth0_user_id, spread_data=spread_data)
 
     session.add(reading)
     session.commit()
 
     assert reading.id is not None
     assert reading.question == question
-    assert reading.user_id == user_id
+    assert reading.auth0_user_id == auth0_user_id
     assert reading.spread_data == spread_data
     assert reading.created_at is not None
     assert reading.updated_at is not None
@@ -47,10 +47,13 @@ def test_reading_representation(session):
     THEN check the representation string contains relevant information
     """
     question = 'What do I need to know?'
-    user_id = 1
+    auth0_user_id = 'auth0|123'
     spread_data = 1
     reading = Reading(
-        question=question, user_id=user_id, spread_data=spread_data)
+        question=question,
+        auth0_user_id=auth0_user_id,
+        spread_data=spread_data
+    )
 
     session.add(reading)
     session.commit()
@@ -68,7 +71,7 @@ def test_reading_from_dict(session):
     """
     data = {
         'question': 'What do I need to know?',
-        'user_id': 1,
+        'auth0_user_id': 'auth0|123',
         'spread_data': 1,
     }
     reading = Reading.from_dict(data)
@@ -78,7 +81,7 @@ def test_reading_from_dict(session):
 
     assert reading.id is not None
     assert reading.question == data['question']
-    assert reading.user_id == data['user_id']
+    assert reading.auth0_user_id == data['auth0_user_id']
     assert reading.spread_data == data['spread_data']
     assert reading.created_at is not None
     assert reading.updated_at is not None
@@ -91,10 +94,13 @@ def test_reading_to_dict(session):
     THEN check that the model is converted to a dictionary correctly
     """
     question = 'What do I need to know?'
-    user_id = 1
+    auth0_user_id = 'auth0|123'
     spread_data = 1
     reading = Reading(
-        question=question, user_id=user_id, spread_data=spread_data)
+        question=question,
+        auth0_user_id=auth0_user_id,
+        spread_data=spread_data
+    )
 
     session.add(reading)
     session.commit()
