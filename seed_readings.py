@@ -106,9 +106,24 @@ def seed_database():
             spread_data={
                     "spread_id": past_present_future_spread.id,
                     "cards": [
-                        {"position": "Past", "card_id": 1, "name": "The Fool", "meaning": "New beginnings"},
-                        {"position": "Present", "card_id": 10, "name": "Wheel of Fortune", "meaning": "Change"},
-                        {"position": "Future", "card_id": 21, "name": "The World", "meaning": "Completion"}
+                        {
+                            "position": "Past",
+                            "card_id": 1,
+                            "name": "The Fool",
+                            "meaning": "New beginnings"
+                        },
+                        {
+                            "position": "Present",
+                            "card_id": 10,
+                            "name": "Wheel of Fortune",
+                            "meaning": "Change"
+                        },
+                        {
+                            "position": "Future",
+                            "card_id": 21,
+                            "name": "The World",
+                            "meaning": "Completion"
+                        }
                     ]
                 }
             ),
@@ -118,9 +133,24 @@ def seed_database():
             spread_data={
                 "spread_id": past_present_future_spread.id,
                 "cards": [
-                        {"position": "Past", "card_id": 6, "name": "The Lovers", "meaning": "Harmony"},
-                        {"position": "Present", "card_id": 13, "name": "Death", "meaning": "Transformation"},
-                        {"position": "Future", "card_id": 19, "name": "The Sun", "meaning": "Joy"}
+                        {
+                            "position": "Past",
+                            "card_id": 6,
+                            "name": "The Lovers",
+                            "meaning": "Harmony"
+                        },
+                        {
+                            "position": "Present",
+                            "card_id": 13,
+                            "name": "Death",
+                            "meaning": "Transformation"
+                        },
+                        {
+                            "position": "Future",
+                            "card_id": 19,
+                            "name": "The Sun",
+                            "meaning": "Joy"
+                        }
                     ]
                 }
             ),
@@ -130,9 +160,24 @@ def seed_database():
             spread_data={
                 "spread_id": past_present_future_spread.id,
                 "cards": [
-                        {"position": "Past", "card_id": 4, "name": "The Emperor", "meaning": "Authority"},
-                        {"position": "Present", "card_id": 11, "name": "Justice", "meaning": "Fairness"},
-                        {"position": "Future", "card_id": 14, "name": "Temperance", "meaning": "Balance"}
+                        {
+                            "position": "Past",
+                            "card_id": 4,
+                            "name": "The Emperor",
+                            "meaning": "Authority"
+                        },
+                        {
+                            "position": "Present",
+                            "card_id": 11,
+                            "name": "Justice",
+                            "meaning": "Fairness"
+                        },
+                        {
+                            "position": "Future",
+                            "card_id": 14,
+                            "name": "Temperance",
+                            "meaning": "Balance"
+                        }
                     ]
                 }
             )
