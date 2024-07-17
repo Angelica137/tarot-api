@@ -21,7 +21,7 @@ def api_info():
     )
 
 
-@api.route("/card/<int:card_id>", methods=["GET"])
+@api.route("/cards/<int:card_id>", methods=["GET"])
 @requires_auth("get:card")
 def get_card(payload, card_id):
     current_app.logger.info("\U0001F7E2", f"Session contents: {session}")
