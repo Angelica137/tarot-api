@@ -15,7 +15,7 @@ import json
 spread_api_bp = Blueprint("spread", __name__)
 
 
-@spread_api_bp.route("/spread/<int:spread_id>", methods=["GET"])
+@spread_api_bp.route("/spreads/<int:spread_id>", methods=["GET"])
 @requires_auth("get:spread")
 def get_spread(payload, spread_id):
     question = request.args.get("question")
@@ -27,7 +27,7 @@ def get_spread(payload, spread_id):
     return jsonify(spread_data), 200
 
 
-@spread_api_bp.route("/spread/<int:spread_id>", methods=["POST"])
+@spread_api_bp.route("/spreads/<int:spread_id>", methods=["POST"])
 @requires_auth("post:spread")
 def save_reading(payload, spread_id):
     auth0_user_id = payload.get("sub")
