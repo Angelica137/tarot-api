@@ -9,11 +9,9 @@ class Spread(db.Model):
     name = db.Column(db.String(255), nullable=False)
     number_of_cards = db.Column(db.Integer, nullable=False)
     layout_id = db.Column(
-        db.Integer,
-        db.ForeignKey('spread_layouts.id'),
-        nullable=False
+        db.Integer, db.ForeignKey("spread_layouts.id"), nullable=False
     )
-    layout = db.relationship('SpreadLayout')
+    layout = db.relationship("SpreadLayout")
     position_meanings = db.Column(db.JSON, nullable=False)
 
     def __init__(self, name, number_of_cards, layout, position_meanings):
@@ -33,8 +31,10 @@ class Spread(db.Model):
             "layout_id": self.layout_id,
             "layout": {
                 "name": self.layout.name,
-                "description": self.layout.layout_description
-            } if self.layout else None
+                "description": self.layout.layout_description,
+            }
+            if self.layout
+            else None,
         }
 
     @staticmethod

@@ -2,7 +2,7 @@ import pytest
 
 
 def test_404_error(client):
-    response = client.get('/non_existent_route')
+    response = client.get("/non_existent_route")
 
     assert response.status_code == 404
 
@@ -10,10 +10,9 @@ def test_404_error(client):
 
     if data is None:
         print(
-            "Response is not JSON. Content type:", response.headers.get(
-                'Content-Type')
+            "Response is not JSON. Content type:", response.headers.get("Content-Type")
         )
-        assert 'not found' in response.data.decode().lower()
+        assert "not found" in response.data.decode().lower()
     else:
-        assert 'error' in data
-        assert 'not found' in data['error'].lower()
+        assert "error" in data
+        assert "not found" in data["error"].lower()

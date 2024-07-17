@@ -23,13 +23,11 @@ def test_new_reading(session):
     THEN check the question, user_id, spread_data, created_at, and updated_at
     are defined correctly
     """
-    question = 'What do I need to know?'
-    auth0_user_id = 'auth0|123'
+    question = "What do I need to know?"
+    auth0_user_id = "auth0|123"
     spread_data = 1
     reading = Reading(
-        question=question,
-        auth0_user_id=auth0_user_id,
-        spread_data=spread_data
+        question=question, auth0_user_id=auth0_user_id, spread_data=spread_data
     )
 
     session.add(reading)
@@ -49,13 +47,11 @@ def test_reading_representation(session):
     WHEN the representation of the model is requested
     THEN check the representation string contains relevant information
     """
-    question = 'What do I need to know?'
-    auth0_user_id = 'auth0|123'
+    question = "What do I need to know?"
+    auth0_user_id = "auth0|123"
     spread_data = 1
     reading = Reading(
-        question=question,
-        auth0_user_id=auth0_user_id,
-        spread_data=spread_data
+        question=question, auth0_user_id=auth0_user_id, spread_data=spread_data
     )
 
     session.add(reading)
@@ -73,9 +69,9 @@ def test_reading_from_dict(session):
     THEN check that the model is created correctly
     """
     data = {
-        'question': 'What do I need to know?',
-        'auth0_user_id': 'auth0|123',
-        'spread_data': 1,
+        "question": "What do I need to know?",
+        "auth0_user_id": "auth0|123",
+        "spread_data": 1,
     }
     reading = Reading.from_dict(data)
 
@@ -83,9 +79,9 @@ def test_reading_from_dict(session):
     session.commit()
 
     assert reading.id is not None
-    assert reading.question == data['question']
-    assert reading.auth0_user_id == data['auth0_user_id']
-    assert reading.spread_data == data['spread_data']
+    assert reading.question == data["question"]
+    assert reading.auth0_user_id == data["auth0_user_id"]
+    assert reading.spread_data == data["spread_data"]
     assert reading.created_at is not None
     assert reading.updated_at is not None
 
@@ -96,21 +92,17 @@ def test_reading_to_dict(session):
     WHEN the to_dict() function is called on the model
     THEN check that the model is converted to a dictionary correctly
     """
-    question = 'What do I need to know?'
-    auth0_user_id = 'auth0|123'
+    question = "What do I need to know?"
+    auth0_user_id = "auth0|123"
     spread_data = 1
     reading = Reading(
-        question=question,
-        auth0_user_id=auth0_user_id,
-        spread_data=spread_data
+        question=question, auth0_user_id=auth0_user_id, spread_data=spread_data
     )
     session.add(reading)
     session.commit()
     reading_dict = reading.to_dict()
-    assert reading_dict['id'] == reading.id
-    assert reading_dict['question'] == question
-    assert reading_dict['spread_data'] == spread_data
-    assert datetime.fromisoformat(
-        reading_dict['created_at']) == reading.created_at
-    assert datetime.fromisoformat(
-        reading_dict['updated_at']) == reading.updated_at
+    assert reading_dict["id"] == reading.id
+    assert reading_dict["question"] == question
+    assert reading_dict["spread_data"] == spread_data
+    assert datetime.fromisoformat(reading_dict["created_at"]) == reading.created_at
+    assert datetime.fromisoformat(reading_dict["updated_at"]) == reading.updated_at

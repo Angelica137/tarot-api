@@ -15,13 +15,12 @@ class SpreadLayout(db.Model):
     @staticmethod
     def from_dict(data):
         return SpreadLayout(
-            name=data['name'],
-            layout_description=json.dumps(data['layout_description'])
+            name=data["name"], layout_description=json.dumps(data["layout_description"])
         )
 
     def to_dict(self):
         return {
             "id": self.id,
             "name": self.name,
-            "layout_description": json.loads(self.layout_description)
+            "layout_description": json.loads(self.layout_description),
         }

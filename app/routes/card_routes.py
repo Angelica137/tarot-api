@@ -7,22 +7,24 @@ from app.models.spread_layout_model import SpreadLayout
 from app import db
 
 
-api = Blueprint('api', __name__)
+api = Blueprint("api", __name__)
 
 
-@api.route('/')
+@api.route("/")
 def api_info():
-    return jsonify({
-        "name": "Tarot API",
-        "version": "1.0",
-        "description": "API for tarot card information"
-    })
+    return jsonify(
+        {
+            "name": "Tarot API",
+            "version": "1.0",
+            "description": "API for tarot card information",
+        }
+    )
 
 
-@api.route('/card/<int:card_id>', methods=['GET'])
-@requires_auth('get:card')
+@api.route("/card/<int:card_id>", methods=["GET"])
+@requires_auth("get:card")
 def get_card(payload, card_id):
-    current_app.logger.info(u"\U0001F7E2", f"Session contents: {session}")
+    current_app.logger.info("\U0001F7E2", f"Session contents: {session}")
     current_app.logger.info(f"Payload received: {payload}")
 
     current_app.logger.info(f"Attempting to retrieve card with id: {card_id}")

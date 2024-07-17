@@ -1,6 +1,7 @@
 alembic==1.12.1
 Authlib==1.2.1
 autopep8==2.0.4
+black==23.3.0
 certifi==2024.7.4
 cffi==1.15.1
 charset-normalizer==3.3.2
@@ -27,7 +28,10 @@ markdown-it-py==2.2.0
 MarkupSafe==2.1.5
 mdurl==0.1.2
 multidict==6.0.5
+mypy-extensions==1.0.0
 packaging==24.0
+pathspec==0.11.2
+platformdirs==4.0.0
 pluggy==1.2.0
 psycopg2==2.9.9
 psycopg2-binary==2.9.9
@@ -49,6 +53,7 @@ rsa==4.9
 six==1.16.0
 SQLAlchemy==2.0.31
 tomli==2.0.1
+typed-ast==1.5.5
 typing_extensions==4.7.1
 urllib3==2.0.7
 Werkzeug==2.2.3

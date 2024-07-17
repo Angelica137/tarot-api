@@ -6,4 +6,4 @@ from .models.card_model import Card
 from .models.spread_layout_model import SpreadLayout
 
 
-__all__ = ['User', 'Reading', 'Spread', 'SpreadCard', 'Card', 'SpreadLayout']
+__all__ = ["User", "Reading", "Spread", "SpreadCard", "Card", "SpreadLayout"]

@@ -14,9 +14,7 @@ def sample_card_data():
         "img": "m00.jpg",
         "fortune_telling": ["Watch for new projects and new beginnings"],
         "keywords": ["freedom"],
-        "meanings": {
-            "light": ["Freeing yourself from limitation"]
-        },
+        "meanings": {"light": ["Freeing yourself from limitation"]},
         "archetype": "The Divine Madman",
         "hebrew_alphabet": "Aleph/Ox/1",
         "numerology": "0 (off the scale; pure potential)",
@@ -24,7 +22,7 @@ def sample_card_data():
         "mythical_spiritual": "Adam before the fall...",
         "questions_to_ask": ["What would I do if I felt free to take a leap?"],
         "affirmation": "I am open to all possibilities.",
-        "astrology": "Uranus, Air"
+        "astrology": "Uranus, Air",
     }
 
 
@@ -40,18 +38,23 @@ def test_new_card(test_app, sample_card_data):
     assert new_card.arcana == "Major Arcana"
     assert new_card.suit == "Trump"
     assert new_card.img == "m00.jpg"
-    assert json.loads(new_card.fortune_telling)[
-        0] == "Watch for new projects and new beginnings"
+    assert (
+        json.loads(new_card.fortune_telling)[0]
+        == "Watch for new projects and new beginnings"
+    )
     assert json.loads(new_card.keywords)[0] == "freedom"
-    assert json.loads(new_card.meanings)["light"][
-        0] == "Freeing yourself from limitation"
+    assert (
+        json.loads(new_card.meanings)["light"][0] == "Freeing yourself from limitation"
+    )
     assert new_card.archetype == "The Divine Madman"
     assert new_card.hebrew_alphabet == "Aleph/Ox/1"
     assert new_card.numerology == "0 (off the scale; pure potential)"
     assert new_card.elemental == "Air"
     assert "Adam before the fall" in new_card.mythical_spiritual
-    assert json.loads(new_card.questions_to_ask)[
-        0] == "What would I do if I felt free to take a leap?"
+    assert (
+        json.loads(new_card.questions_to_ask)[0]
+        == "What would I do if I felt free to take a leap?"
+    )
     assert new_card.affirmation == "I am open to all possibilities."
     assert new_card.astrology == "Uranus, Air"
 
@@ -79,7 +82,7 @@ def test_card_to_dict(sample_card_data):
             assert card_dict[key] == json.loads(json.dumps(value))
         else:
             assert card_dict[key] == value
-    assert 'id' in card_dict
+    assert "id" in card_dict
 
 
 def test_card_from_dict(sample_card_data):
