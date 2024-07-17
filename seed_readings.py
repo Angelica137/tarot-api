@@ -140,3 +140,12 @@ def seed_database():
 
     for reading in readings:
         db.session.add(reading)
+
+    db.session.commit()
+    print("Database seeded successfully!")
+
+
+if __name__ == "__main__":
+    app = create_app()
+    with app.app_context():
+        seed_database()
