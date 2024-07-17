@@ -52,7 +52,7 @@ def test_get_existing_card(client, mock_auth, mock_token):
         added_card = Card.query.filter_by(name="The Fool").first()
         assert added_card is not None, "Card was not added to the database"
 
-        response = client.get(f"/api/card/{added_card.id}", headers=headers)
+        response = client.get(f"/api/cards/{added_card.id}", headers=headers)
         print(f"Response: {response.data}")
         assert response.status_code == 200, f"Expected 200, got {response.status_code}"
 

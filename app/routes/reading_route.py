@@ -70,16 +70,25 @@ def get_reading(payload, id):
 @requires_auth("patch:question")
 def update_reading_question(payload, reading_id):
     auth0_user_id = payload.get("sub")
-    
+
     if not auth0_user_id:
         return jsonify({"error": "User ID not found in token"}), 401
 
     try:
         # Query the reading without load_only
-        reading = Reading.query.filter_by(id=reading_id, auth0_user_id=auth0_user_id).first()
-        
+        reading = Reading.query.filter_by(
+            id=reading_id, auth0_user_id=auth0_user_id
+        ).first()
+
         if not reading:
-            return jsonify({"error": "Reading not found or you don't have permission to update it"}), 404
+            return (
+                jsonify(
+                    {
+                        "error": "Reading not found or you don't have permission to update it"
+                    }
+                ),
+                404,
+            )
 
         # Get new question from request
         new_question = request.json.get("question")
@@ -97,7 +106,9 @@ def update_reading_question(payload, reading_id):
         reading.question = new_question
 
         # Log the update attempt
-        logging.info(f"Attempting to update question from '{old_question}' to '{new_question}'")
+        logging.info(
+            f"Attempting to update question from '{old_question}' to '{new_question}'"
+        )
 
         # Commit the changes
         db.session.commit()
@@ -111,18 +122,28 @@ def update_reading_question(payload, reading_id):
         # Log the final state
         logging.info(f"Final question after update: {updated_question}")
 
-        return jsonify({
-            "message": "Reading question updated successfully" if updated_question == new_question else "Update may have failed",
-            "reading_id": reading.id,
-            "old_question": old_question,
-            "new_question": updated_question,
-            "request_question": new_question
-        }), 200
+        return (
+            jsonify(
+                {
+                    "message": "Reading question updated successfully"
+                    if updated_question == new_question
+                    else "Update may have failed",
+                    "reading_id": reading.id,
+                    "old_question": old_question,
+                    "new_question": updated_question,
+                    "request_question": new_question,
+                }
+            ),
+            200,
+        )
 
     except SQLAlchemyError as e:
         db.session.rollback()
         logging.error(f"Error updating reading question: {str(e)}")
-        return jsonify({"error": "An error occurred while updating the reading question"}), 500
+        return (
+            jsonify({"error": "An error occurred while updating the reading question"}),
+            500,
+        )
 
 
 @reading_api_bp.route("/readings/<int:reading_id>", methods=["DELETE"])
@@ -145,10 +166,15 @@ def delete_reading(payload, reading_id):
         db.session.delete(reading)
         db.session.commit()
 
-        return jsonify({
-            "message": "Reading successfully deleted",
-            "deleted_reading": reading_details
-        }), 200
+        return (
+            jsonify(
+                {
+                    "message": "Reading successfully deleted",
+                    "deleted_reading": reading_details,
+                }
+            ),
+            200,
+        )
 
     except SQLAlchemyError as e:
         db.session.rollback()
