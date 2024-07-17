@@ -144,13 +144,13 @@ def seed_database():
                             "name": "The Lovers",
                             "meaning": "Harmony"
                         },
-                        {
+                    {
                             "position": "Present",
                             "card_id": 13,
                             "name": "Death",
                             "meaning": "Transformation"
-                        },
-                        {
+                    },
+                    {
                             "position": "Future",
                             "card_id": 19,
                             "name": "The Sun",
@@ -171,18 +171,18 @@ def seed_database():
                             "name": "The Emperor",
                             "meaning": "Authority"
                         },
-                        {
+                    {
                             "position": "Present",
                             "card_id": 11,
                             "name": "Justice",
                             "meaning": "Fairness"
-                        },
-                        {
+                    },
+                    {
                             "position": "Future",
                             "card_id": 14,
                             "name": "Temperance",
                             "meaning": "Balance"
-                        }
+                    }
                     ]
                 }
             )
