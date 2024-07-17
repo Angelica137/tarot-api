@@ -133,55 +133,55 @@ def seed_database():
             spread_data={
                 "spread_id": past_present_future_spread.id,
                 "cards": [
-                        {
-                            "position": "Past",
-                            "card_id": 6,
-                            "name": "The Lovers",
-                            "meaning": "Harmony"
-                        },
                     {
-                            "position": "Present",
-                            "card_id": 13,
-                            "name": "Death",
-                            "meaning": "Transformation"
+                        "position": "Past",
+                        "card_id": 6,
+                        "name": "The Lovers",
+                        "meaning": "Harmony"
                     },
                     {
-                            "position": "Future",
-                            "card_id": 19,
-                            "name": "The Sun",
-                            "meaning": "Joy"
-                        }
-                    ]
-                }
-            ),
+                        "position": "Present",
+                        "card_id": 13,
+                        "name": "Death",
+                        "meaning": "Transformation"
+                    },
+                    {
+                        "position": "Future",
+                        "card_id": 19,
+                        "name": "The Sun",
+                        "meaning": "Joy"
+                    }
+                ]
+            }
+        ),
         Reading(
             question="What should I focus on this month?",
             user_id=user.id,
             spread_data={
                 "spread_id": past_present_future_spread.id,
                 "cards": [
-                        {
-                            "position": "Past",
-                            "card_id": 4,
-                            "name": "The Emperor",
-                            "meaning": "Authority"
-                        },
                     {
-                            "position": "Present",
-                            "card_id": 11,
-                            "name": "Justice",
-                            "meaning": "Fairness"
+                        "position": "Past",
+                        "card_id": 4,
+                        "name": "The Emperor",
+                        "meaning": "Authority"
                     },
                     {
-                            "position": "Future",
-                            "card_id": 14,
-                            "name": "Temperance",
-                            "meaning": "Balance"
+                        "position": "Present",
+                        "card_id": 11,
+                        "name": "Justice",
+                        "meaning": "Fairness"
+                    },
+                    {
+                        "position": "Future",
+                        "card_id": 14,
+                        "name": "Temperance",
+                        "meaning": "Balance"
                     }
-                    ]
-                }
-            )
-        ]
+                ]
+            }
+        )
+    ]
 
     for reading in readings:
         db.session.add(reading)
