@@ -25,22 +25,26 @@ def get_readings(payload):
         return jsonify({"error": "Invalid page or per_page value"}), 400
 
     try:
-        readings = Reading.query.filter_by(
-            auth0_user_id=auth0_user_id).paginate(
+        readings = Reading.query.filter_by(auth0_user_id=auth0_user_id).paginate(
             page=page, per_page=per_page, error_out=False
         )
 
         if not readings.items:
             return jsonify({"error": "No readings found"}), 404
 
-        return jsonify({
-            "readings": [reading.to_dict() for reading in readings.items],
-            "total": readings.total,
-            "pages": readings.pages,
-            "current_page": page,
-            "has_next": readings.has_next,
-            "has_prev": readings.has_prev,
-        }), 200
+        return (
+            jsonify(
+                {
+                    "readings": [reading.to_dict() for reading in readings.items],
+                    "total": readings.total,
+                    "pages": readings.pages,
+                    "current_page": page,
+                    "has_next": readings.has_next,
+                    "has_prev": readings.has_prev,
+                }
+            ),
+            200,
+        )
 
     except SQLAlchemyError as e:
         logging.error(f"Error retrieving readings: {str(e)}")
@@ -59,4 +63,3 @@ def get_reading(payload, id):
     if reading.auth0_user_id != current_user_id:
         return jsonify({"error": "Unauthorized"}), 401
     return jsonify(reading.to_dict()), 200
-
