@@ -17,7 +17,8 @@ def seed_cards():
         # Debug print statements
         for key, value in card_data.items():
             if isinstance(value, str) and len(value) > 50:
-                print(f"Warning: '{key}' exceeds 50 characters. Length: {len(value)}")
+                print(
+                    f"Warning: '{key}' exceeds 50 characters. Length: {len(value)}")
                 print(f"Value: {value[:100]}...")  # Print first 100 chars
 
         img_filename = card_data.get('img', '')
