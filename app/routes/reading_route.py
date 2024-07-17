@@ -63,11 +63,11 @@ def get_readings():
     }), 200
 
 
-@reading_api_bp.route('/readings/<int:reading_id>', methods=['GET', 'DELETE'])
+@reading_api_bp.route('/readings/<int:reading_id>', methods=[
+    'GET', 'DELETE', 'PATCH'])
 def get_reading(reading_id):
-    current_user_id = get_jwt_identity()
     reading = Reading.query.filter_by(
-        id=reading_id, user_id=current_user_id).first()
+        id=reading_id).first()
 
     if not reading:
         return jsonify({'error': 'Reading not found'}), 404
@@ -76,9 +76,8 @@ def get_reading(reading_id):
         return jsonify(reading.to_dict()), 200
 
     if request.method == 'DELETE':
-        current_user_id = get_jwt_identity()
         reading = Reading.query.filter_by(
-            id=reading_id, user_id=current_user_id).first()
+            id=reading_id).first()
 
         print(
             f"Attempting to delete reading {reading_id} for user {current_user_id}"

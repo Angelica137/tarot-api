@@ -8,7 +8,8 @@ class Reading(db.Model):
     __tablename__ = 'readings'
     id = db.Column(db.Integer, primary_key=True)
     question = db.Column(db.String(255), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    auth0_user_id = db.Column(
+        db.String(64), db.ForeignKey('users.auth0_user_id'), nullable=False)
     spread_data = db.Column(JSON, nullable=False)
     created_at = db.Column(
         db.DateTime,
@@ -24,9 +25,9 @@ class Reading(db.Model):
 
     user = db.relationship('User', back_populates='readings')
 
-    def __init__(self, question, user_id, spread_data):
+    def __init__(self, question, auth0_user_id, spread_data):
         self.question = question
-        self.user_id = user_id
+        self.auth0_user_id = auth0_user_id
         self.spread_data = spread_data
 
     def __repr__(self):

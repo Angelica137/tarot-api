@@ -102,7 +102,7 @@ def seed_database():
     readings = [
         Reading(
             question="What's my career outlook?",
-            user_id=user.id,
+            auth0_user_id=user.auth0_user_id,
             spread_data={
                 "spread_id": past_present_future_spread.id,
                 "cards": [
@@ -129,7 +129,7 @@ def seed_database():
         ),
         Reading(
             question="How's my love life?",
-            user_id=user.id,
+            auth0_user_id=user.auth0_user_id,
             spread_data={
                 "spread_id": past_present_future_spread.id,
                 "cards": [
@@ -156,7 +156,7 @@ def seed_database():
         ),
         Reading(
             question="What should I focus on this month?",
-            user_id=user.id,
+            auth0_user_id=user.auth0_user_id,
             spread_data={
                 "spread_id": past_present_future_spread.id,
                 "cards": [
