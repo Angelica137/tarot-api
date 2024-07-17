@@ -22,15 +22,16 @@ def get_spread_data(spread_id):
         selected_cards = generate_random_cards(spread, spread.number_of_cards)
         layout_description = spread.layout.layout_description
         return {
-            'spread': spread.to_dict(),
-            'layout_name': spread.layout.name,
-            'cards': [
+            "spread": spread.to_dict(),
+            "layout_name": spread.layout.name,
+            "cards": [
                 {
-                    'position': i + 1,
-                    'description': layout_description[i],
-                    'card': card.to_dict()
-                } for i, card in enumerate(selected_cards)
-            ]
+                    "position": i + 1,
+                    "description": layout_description[i],
+                    "card": card.to_dict(),
+                }
+                for i, card in enumerate(selected_cards)
+            ],
         }
     except Exception as e:
         abort(500, description=f"Error getting spread data: {str(e)}")

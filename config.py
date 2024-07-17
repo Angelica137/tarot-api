@@ -7,18 +7,17 @@ load_dotenv()
 class Config:
     DEBUG = False
     TESTING = False
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
-    SQLALCHEMY_DATABASE_URI = os.environ.get(
-        'DATABASE_URL') or 'postgresql:///oracle'
+    SECRET_KEY = os.environ.get("SECRET_KEY") or "you-will-never-guess"
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL") or "postgresql:///oracle"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    SESSION_TYPE = 'filesystem'
-    SESSION_KEY = os.environ.get('SESSION_KEY', 'your-secret-key')
+    SESSION_TYPE = "filesystem"
+    SESSION_KEY = os.environ.get("SESSION_KEY", "your-secret-key")
 
 
 class TestingConfig(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+    SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
 
 
 class DevelopmentConfig(Config):
