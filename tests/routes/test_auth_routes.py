@@ -1,12 +1,18 @@
 import pytest
 import app
 from flask import session
+from unittest.mock import patch
 
 
 @pytest.fixture
 def client(test_app):
     return test_app.test_client(use_cookies=True)
 
+
+@pytest.fixture
+def mock_auth0(mocker):
+    mock = mocker.patch('app.routes.auth_routes.get_auth0_client')
+    return mock
 
 """
 @pytest.fixture(autouse=True)

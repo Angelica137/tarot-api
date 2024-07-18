@@ -35,7 +35,7 @@ def test_db(test_app):
 
 @pytest.fixture(scope="module")
 def client(test_app):
-    return test_app.test_client()
+    return test_app.test_client(use_cookies=True)
 
 
 @pytest.fixture(scope="function")
@@ -127,3 +127,9 @@ def sample_user_data():
         "password": "securepassword",
         "role": "user",
     }
+
+
+@pytest.fixture
+def session_app(test_app):
+    with test_app.test_request_context():
+        yield test_app
