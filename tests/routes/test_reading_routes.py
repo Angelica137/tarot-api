@@ -128,7 +128,7 @@ def test_get_readings_unauthorized(client):
     assert excinfo.value.status_code == 401
     assert excinfo.value.error == {
         "code": "authorization_header_missing",
-        "description": "Authorization header is expected."
+        "description": "Authorization header is expected.",
     }
 
 
@@ -136,21 +136,22 @@ def test_get_readings_unauthorized(client):
 def test_get_reading_detail(client, mock_auth):
     mock_auth.return_value = {
         "sub": "test_user_id",
-        "permissions": ["get:reading-detail"]
+        "permissions": ["get:reading-detail"],
     }
-    
+
     # Create a test reading
     test_reading = Reading(
         auth0_user_id="test_user_id",
         question="Test question?",
-        spread_data=1  # Adjust this based on your spread_data structure
+        spread_data=1,  # Adjust this based on your spread_data structure
     )
     db.session.add(test_reading)
     db.session.commit()
 
     try:
         response = client.get(
-            f"/api/readings/{test_reading.id}", headers={"Authorization": "Bearer mock_token"}
+            f"/api/readings/{test_reading.id}",
+            headers={"Authorization": "Bearer mock_token"},
         )
         assert response.status_code == 200
         data = json.loads(response.data)
@@ -162,53 +163,69 @@ def test_get_reading_detail(client, mock_auth):
         db.session.commit()
 
 
-"""
 def test_get_reading_detail_not_found(client, mock_auth):
-    mock_auth.return_value = {"sub": "test_user_id"}
+    mock_auth.return_value = {
+        "sub": "test_user_id",
+        "permissions": ["get:reading-detail"]
+    }
     response = client.get(
         "/api/readings/9999", headers={"Authorization": "Bearer mock_token"}
     )
     assert response.status_code == 404
-
-
-def test_get_reading_detail_unauthorized(client, mock_auth):
-    mock_auth.return_value = {"sub": "wrong_user_id"}
-    # Assume reading with id 1 exists but doesn't belong to wrong_user_id
-    response = client.get(
-        "/api/readings/1", headers={"Authorization": "Bearer mock_token"}
-    )
-    assert response.status_code == 401
-
-
-def test_get_reading_detail(client, mock_auth):
-    mock_auth.return_value = {"sub": "test_user_id"}
-    # Assume reading with id 1 exists and belongs to test_user_id
-    response = client.get(
-        "/api/readings/1", headers={"Authorization": "Bearer mock_token"}
-    )
-    assert response.status_code == 200
     data = json.loads(response.data)
-    assert "id" in data
-    assert "question" in data
-
-
-def test_get_reading_detail_not_found(client, mock_auth):
-    mock_auth.return_value = {"sub": "test_user_id"}
-    response = client.get(
-        "/api/readings/9999", headers={"Authorization": "Bearer mock_token"}
-    )
-    assert response.status_code == 404
+    assert "error" in data
+    assert "not found" in data["error"].lower()
 
 
 def test_get_reading_detail_unauthorized(client, mock_auth):
-    mock_auth.return_value = {"sub": "wrong_user_id"}
-    # Assume reading with id 1 exists but doesn't belong to wrong_user_id
+    mock_auth.return_value = {
+        "sub": "wrong_user_id",
+        "permissions": ["get:reading-detail"]
+    }
+    # Create a reading that belongs to a different user
+    test_reading = Reading(
+        auth0_user_id="correct_user_id",
+        question="Test question?",
+        spread_data=1
+    )
+    db.session.add(test_reading)
+    db.session.commit()
+
+    try:
+        response = client.get(
+            f"/api/readings/{test_reading.id}", headers={"Authorization": "Bearer mock_token"}
+        )
+        assert response.status_code == 401
+        data = json.loads(response.data)
+        assert "error" in data
+        assert "unauthorized" in data["error"].lower()
+    finally:
+        db.session.delete(test_reading)
+        db.session.commit()
+
+
+def test_get_reading_detail_forbidden(client, mock_auth):
+    mock_auth.return_value = {
+        "sub": "test_user_id",
+        "permissions": []  # No permissions
+    }
     response = client.get(
         "/api/readings/1", headers={"Authorization": "Bearer mock_token"}
     )
-    assert response.status_code == 401
+    assert response.status_code == 403
+    
+    # Check if the response is HTML
+    if 'text/html' in response.content_type:
+        assert 'Forbidden' in response.data.decode()
+        assert 'You don&#39;t have the permission to access the requested resource' in response.data.decode()
+    else:
+        # If it's JSON, parse it
+        data = json.loads(response.data)
+        assert "error" in data
+        assert "permission" in data["error"].lower()
 
-
+#PATCH:question
+"""
 def test_update_reading_question(client, mock_auth):
     mock_auth.return_value = {"sub": "test_user_id"}
     new_question = "Updated question?"
