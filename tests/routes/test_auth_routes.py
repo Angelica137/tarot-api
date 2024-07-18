@@ -1,17 +1,21 @@
 import pytest
 import responses
 from flask import session
+import os
 
 @pytest.mark.parametrize("route", ["/api/login", "/api/logout", "/api/callback"])
 @responses.activate
 def test_auth_routes_exist(client, route):
+    auth_domain = os.getenv('AUTH_DOMAIN', 'https://example.com')
+    auth_well_known_url = f"{auth_domain}/.well-known/openid-configuration"
+
     # Mock the necessary auth0 URL
-    responses.add(responses.GET, 'https://dev-q2zjnanpz8egzzkb.us.auth0.com/.well-known/openid-configuration', json={'key': 'value'}, status=200)
+    responses.add(responses.GET, auth_well_known_url, json={'key': 'value'}, status=200)
     
     # Mock your API routes
-    responses.add(responses.GET, 'https://example.com/api/login', json={'key': 'value'}, status=200)
-    responses.add(responses.GET, 'https://example.com/api/logout', json={'key': 'value'}, status=200)
-    responses.add(responses.GET, 'https://example.com/api/callback', json={'key': 'value'}, status=200)
+    responses.add(responses.GET, f'{auth_domain}/api/login', json={'key': 'value'}, status=200)
+    responses.add(responses.GET, f'{auth_domain}/api/logout', json={'key': 'value'}, status=200)
+    responses.add(responses.GET, f'{auth_domain}/api/callback', json={'key': 'value'}, status=200)
 
     with client.session_transaction() as sess:
         sess["state"] = "test_state"
@@ -29,4 +33,5 @@ def test_print_config(test_app):
     for key, value in test_app.config.items():
         if not isinstance(value, dict) and not callable(value):
             print(f"{key}: {value}")
+
 
