@@ -4,6 +4,11 @@ from flask import session
 
 
 @pytest.fixture
+def client(app):
+    return app.test_client(use_cookies=True)
+
+
+@pytest.fixture
 def mock_auth(mocker):
     mock = mocker.patch("app.auth.auth.verify_decode_jwt")
     mock.return_value = {"permissions": ["get:card"]}
