@@ -144,36 +144,37 @@ def session_app(test_app):
 def mock_auth0_client(monkeypatch):
     mock_client = Mock()
     mock_client.authorize_redirect.return_value = "http://mock-redirect"
-    monkeypatch.setattr('app.routes.auth_routes.get_auth0_client', lambda: mock_client)
+    monkeypatch.setattr("app.routes.auth_routes.get_auth0_client", lambda: mock_client)
     return mock_client
 
 
 @pytest.fixture
 def mock_config(monkeypatch):
     config = {
-        'AUTH0_DOMAIN': 'test.auth0.com',
-        'AUTH0_CLIENT_ID': 'test-client-id',
-        'API_AUDIENCE': 'test-audience',
-        'APPLICATION_ROOT': '/',
-        'SERVER_NAME': 'localhost',
-        'PREFERRED_URL_SCHEME': 'http', 
+        "AUTH0_DOMAIN": "test.auth0.com",
+        "AUTH0_CLIENT_ID": "test-client-id",
+        "API_AUDIENCE": "test-audience",
+        "APPLICATION_ROOT": "/",
+        "SERVER_NAME": "localhost",
+        "PREFERRED_URL_SCHEME": "http",
     }
-    monkeypatch.setattr('flask.current_app.config', config)
-    
+    monkeypatch.setattr("flask.current_app.config", config)
+
 
 @pytest.fixture
 def mock_auth0(monkeypatch):
     mock = Mock()
     mock.authorize_redirect.return_value = "http://mock-redirect"
-    monkeypatch.setattr('app.routes.auth_routes.get_auth0_client', lambda: mock)
+    monkeypatch.setattr("app.routes.auth_routes.get_auth0_client", lambda: mock)
     return mock
+
 
 @pytest.fixture
 def mock_config(monkeypatch):
     config = {
-        'AUTH0_DOMAIN': 'test.auth0.com',
-        'AUTH0_CLIENT_ID': 'test-client-id',
-        'API_AUDIENCE': 'test-audience',
+        "AUTH0_DOMAIN": "test.auth0.com",
+        "AUTH0_CLIENT_ID": "test-client-id",
+        "API_AUDIENCE": "test-audience",
     }
-    monkeypatch.setattr('flask.current_app.config', config)
+    monkeypatch.setattr("flask.current_app.config", config)
     return config
