@@ -6,10 +6,6 @@ on:
   pull_request:
     branches: [main]
 
-env:
-  BASE_URL: https://example.com
-  API_KEY: ${{ secrets.API_KEY }}
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -28,12 +24,21 @@ jobs:
           pip install -r requirements.txt
           pip install pytest autopep8
 
+      - name: Debug Environment Variables
+        run: |
+          echo "BASE_URL: $BASE_URL"
+          echo "API_KEY: $API_KEY"
+
       - name: Run tests
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}
+          API_KEY: ${{ secrets.API_KEY }}
         run: pytest
 
       - name: Run autopep8
         run: |
           autopep8 --in-place --recursive --exclude=migrations,venv,__pycache__ .
+
       - name: Check for modified files (excluding __pycache__ and binary files)
         id: git-check
         run: |
