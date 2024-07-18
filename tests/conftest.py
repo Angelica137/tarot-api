@@ -2,6 +2,8 @@ import pytest
 from app import create_app, db
 from sqlalchemy.orm import scoped_session, sessionmaker
 from app.models.reading_model import Reading
+from unittest.mock import patch, Mock
+from flask import session
 
 
 pytest_plugins = ["pytest_mock"]
@@ -19,7 +21,9 @@ def test_app():
     app = create_app("testing")
     app.config["TESTING"] = True
     app.config["SQLALCHEMY_ECHO"] = True
-    app.config["SECRET_KEY"] = "test-secret-key"  # Add this line
+    app.config["SECRET_KEY"] = "test-secret-key"
+    app.config["APPLICATION_ROOT"] = "/"
+    app.config["PREFERRED_URL_SCHEME"] = "http"  # Add this line
 
     with app.app_context():
         db.create_all()
@@ -133,3 +137,25 @@ def sample_user_data():
 def session_app(test_app):
     with test_app.test_request_context():
         yield test_app
+
+
+# Auth0 mock to test auth routes
+@pytest.fixture
+def mock_auth0_client(monkeypatch):
+    mock_client = Mock()
+    mock_client.authorize_redirect.return_value = "http://mock-redirect"
+    monkeypatch.setattr('app.routes.auth_routes.get_auth0_client', lambda: mock_client)
+    return mock_client
+
+
+@pytest.fixture
+def mock_config(monkeypatch):
+    config = {
+        'AUTH0_DOMAIN': 'test.auth0.com',
+        'AUTH0_CLIENT_ID': 'test-client-id',
+        'API_AUDIENCE': 'test-audience',
+        'APPLICATION_ROOT': '/',
+        'SERVER_NAME': 'localhost',
+        'PREFERRED_URL_SCHEME': 'http',  # Add this line
+    }
+    monkeypatch.setattr('flask.current_app.config', config)

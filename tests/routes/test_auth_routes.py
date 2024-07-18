@@ -14,14 +14,6 @@ def mock_auth0(mocker):
     mock = mocker.patch('app.routes.auth_routes.get_auth0_client')
     return mock
 
-"""
-@pytest.fixture(autouse=True)
-def mock_session(monkeypatch):
-    mock_dict = {}
-    monkeypatch.setattr(session, '_get_current_object', lambda: mock_dict)
-    return mock_dict
-"""
-
 
 @pytest.fixture
 def mock_auth(mocker):
