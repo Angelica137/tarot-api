@@ -4,8 +4,17 @@ from flask import session
 
 
 @pytest.fixture
-def client(app):
-    return app.test_client(use_cookies=True)
+def client(test_app):
+    return test_app.test_client(use_cookies=True)
+
+
+"""
+@pytest.fixture(autouse=True)
+def mock_session(monkeypatch):
+    mock_dict = {}
+    monkeypatch.setattr(session, '_get_current_object', lambda: mock_dict)
+    return mock_dict
+"""
 
 
 @pytest.fixture

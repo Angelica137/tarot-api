@@ -22,6 +22,8 @@ def create_app(config_class=Config):
     if isinstance(config_class, str):
         if config_class == "testing":
             app.config.from_object(TestingConfig)
+            app.config["TESTING"] = True
+            app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "test-secret-key")
         elif config_class == "development":
             app.config.from_object(DevelopmentConfig)
         elif config_class == "production":
