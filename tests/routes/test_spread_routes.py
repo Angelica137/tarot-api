@@ -1,112 +1,115 @@
 import json
-from app.models.spread_model import Spread
-from app.models.spread_layout_model import SpreadLayout
-from app.models.card_model import Card
+import pytest
+from app.models.reading_model import Reading
+from app import db
 
 
-"""
-def test_get_spread(client, session):
-    # Create a SpreadLayout with the correct structure
-    layout = SpreadLayout(
-        name='Three Card Spread',
-        layout_description=json.dumps({
-            "type": "linear",
-            "positions": [
-                {"name": "Past", "x": 0, "y": 0},
-                {"name": "Present", "x": 1, "y": 0},
-                {"name": "Future", "x": 2, "y": 0}
-            ]
-        })
+@pytest.fixture
+def mock_auth(mocker):
+    return mocker.patch("app.auth.auth.verify_decode_jwt")
+
+
+@pytest.fixture
+def mock_get_spread_data(mocker):
+    return mocker.patch("app.routes.spread_routes.get_spread_data")
+
+
+# GET /spreads/<int:spread_id>
+def test_get_spread_success(client, mock_auth, mock_get_spread_data):
+    mock_auth.return_value = {"sub": "test_user_id", "permissions": ["get:spread"]}
+    mock_get_spread_data.return_value = {"id": 1, "name": "Test Spread"}
+
+    response = client.get(
+        "/api/spreads/1", headers={"Authorization": "Bearer mock_token"}
     )
-    session.add(layout)
-    session.flush()  # This assigns an ID to layout
-
-    # Create a Spread
-    spread = Spread(
-        name="Past, Present, Future",
-        number_of_cards=3,
-        layout_id=layout.id
-    )
-    session.add(spread)
-
-    # Create some Cards
-    cards = []
-    for i in range(10):  # Create more cards than needed for the spread
-        card = Card(
-            name=f'Test Card {i}',
-            number=str(i),
-            arcana='Major' if i % 2 == 0 else 'Minor',
-            suit='Wands' if i % 4 == 0 else 'Cups' if i % 4 == 1 else 'Swords'
-            if i % 4 == 2 else 'Pentacles',
-            img=f'test_image_{i}.jpg',
-            fortune_telling=json.dumps([f"Fortune {i}", f"Another fortune {i}"
-            ]),
-            keywords=json.dumps([f"Keyword {i}", f"Another keyword {i}"]),
-            meanings=json.dumps({
-                "light": [f"Light meaning {i}"],
-                "shadow": [f"Shadow meaning {i}"]
-            }),
-            archetype=f"Archetype {i}",
-            hebrew_alphabet=f"Hebrew {i}",
-            numerology=f"Numerology {i}",
-            elemental=f"Element {i}",
-            mythical_spiritual=f"Myth {i}",
-            questions_to_ask=json.dumps([f"Question {i}?", f"Another question
-            {i}?"])
-        )
-        session.add(card)
-        cards.append(card)
-
-    session.commit()
-
-    response = client.get(f'/api/spread/{spread.id}')
     assert response.status_code == 200
-    data = response.get_json()
+    data = json.loads(response.data)
+    assert "id" in data
+    assert "name" in data
 
-    assert 'spread' in data
-    assert 'layout_name' in data
-    assert data['layout_name'] == 'Three Card Spread'
-    assert 'cards' in data
-    assert len(data['cards']) == 3
 
-    layout_descriptions = json.loads(layout.layout_description)['positions']
+def test_get_spread_with_question(client, mock_auth, mock_get_spread_data):
+    mock_auth.return_value = {"sub": "test_user_id", "permissions": ["get:spread"]}
+    mock_get_spread_data.return_value = {"id": 1, "name": "Test Spread"}
 
-    for i, card_data in enumerate(data['cards']):
-        assert 'position' in card_data
-        assert isinstance(card_data['position'], int)
-        assert card_data['position'] == i + 1
-        assert 'description' in card_data
-        assert isinstance(card_data['description'], str)
-        assert 'card' in card_data
-        card = card_data['card']
-        assert 'name' in card
-        assert 'number' in card
-        assert 'arcana' in card
-        assert 'suit' in card
-        assert 'img' in card
-        assert 'fortune_telling' in card
-        assert 'keywords' in card
-        assert 'meanings' in card
-        assert 'archetype' in card
-        assert 'hebrew_alphabet' in card
-        assert 'numerology' in card
-        assert 'elemental' in card
-        assert 'mythical_spiritual' in card
-        assert 'questions_to_ask' in card
+    response = client.get(
+        "/api/spreads/1?question=Test%20Question",
+        headers={"Authorization": "Bearer mock_token"},
+    )
+    assert response.status_code == 200
+    data = json.loads(response.data)
+    assert "question" in data
+    assert data["question"] == "Test Question"
 
-        # Check that card data matches one of the created cards
-        card_found = False
-        for created_card in cards:
-            if (card['name'] == created_card.name and
-                card['number'] == created_card.number and
-                card['arcana'] == created_card.arcana and
-                card['suit'] == created_card.suit and
-                card['img'] == created_card.img):
-                card_found = True
-                break
-        assert card_found
 
-    # Check that cards are randomly selected
-    card_names = set(card_data['card']['name'] for card_data in data['cards'])
-    assert len(card_names) == 3
-"""
+def test_get_spread_unauthorized(client, mock_auth):
+    mock_auth.return_value = {"sub": "test_user_id", "permissions": []}
+    response = client.get(
+        "/api/spreads/1", headers={"Authorization": "Bearer mock_token"}
+    )
+    assert response.status_code == 403
+
+
+# POST /spreads/<int:spread_id>
+def test_save_reading_success(client, mock_auth, mock_get_spread_data):
+    mock_auth.return_value = {"sub": "test_user_id", "permissions": ["post:spread"]}
+    mock_get_spread_data.return_value = {"id": 1, "name": "Test Spread"}
+
+    response = client.post(
+        "/api/spreads/1",
+        headers={"Authorization": "Bearer mock_token"},
+        json={"question": "Test Question"},
+    )
+    assert response.status_code == 201
+    data = json.loads(response.data)
+    assert "message" in data
+    assert "reading_id" in data
+
+
+def test_save_reading_no_user_id(client, mock_auth):
+    mock_auth.return_value = {"permissions": ["post:spread"]}  # No 'sub' key
+    response = client.post(
+        "/api/spreads/1",
+        headers={"Authorization": "Bearer mock_token"},
+        json={"question": "Test Question"},
+    )
+    assert response.status_code == 401
+
+
+def test_save_reading_spread_not_found(client, mock_auth, mock_get_spread_data):
+    mock_auth.return_value = {"sub": "test_user_id", "permissions": ["post:spread"]}
+    mock_get_spread_data.return_value = None
+
+    response = client.post(
+        "/api/spreads/1",
+        headers={"Authorization": "Bearer mock_token"},
+        json={"question": "Test Question"},
+    )
+    assert response.status_code == 404
+
+
+def test_save_reading_db_error(client, mock_auth, mock_get_spread_data, mocker):
+    mock_auth.return_value = {"sub": "test_user_id", "permissions": ["post:spread"]}
+    mock_get_spread_data.return_value = {"id": 1, "name": "Test Spread"}
+
+    # Mock db.session.commit to raise an exception
+    mocker.patch("app.db.session.commit", side_effect=Exception("DB Error"))
+
+    response = client.post(
+        "/api/spreads/1",
+        headers={"Authorization": "Bearer mock_token"},
+        json={"question": "Test Question"},
+    )
+    assert response.status_code == 500
+    data = json.loads(response.data)
+    assert "error" in data
+
+
+def test_save_reading_unauthorized(client, mock_auth):
+    mock_auth.return_value = {"sub": "test_user_id", "permissions": []}
+    response = client.post(
+        "/api/spreads/1",
+        headers={"Authorization": "Bearer mock_token"},
+        json={"question": "Test Question"},
+    )
+    assert response.status_code == 403

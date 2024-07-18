@@ -167,7 +167,7 @@ def test_get_reading_detail(client, mock_auth):
 def test_get_reading_detail_not_found(client, mock_auth):
     mock_auth.return_value = {
         "sub": "test_user_id",
-        "permissions": ["get:reading-detail"]
+        "permissions": ["get:reading-detail"],
     }
     response = client.get(
         "/api/readings/9999", headers={"Authorization": "Bearer mock_token"}
@@ -181,20 +181,19 @@ def test_get_reading_detail_not_found(client, mock_auth):
 def test_get_reading_detail_unauthorized(client, mock_auth):
     mock_auth.return_value = {
         "sub": "wrong_user_id",
-        "permissions": ["get:reading-detail"]
+        "permissions": ["get:reading-detail"],
     }
     # Create a reading that belongs to a different user
     test_reading = Reading(
-        auth0_user_id="correct_user_id",
-        question="Test question?",
-        spread_data=1
+        auth0_user_id="correct_user_id", question="Test question?", spread_data=1
     )
     db.session.add(test_reading)
     db.session.commit()
 
     try:
         response = client.get(
-            f"/api/readings/{test_reading.id}", headers={"Authorization": "Bearer mock_token"}
+            f"/api/readings/{test_reading.id}",
+            headers={"Authorization": "Bearer mock_token"},
         )
         assert response.status_code == 401
         data = json.loads(response.data)
@@ -208,17 +207,20 @@ def test_get_reading_detail_unauthorized(client, mock_auth):
 def test_get_reading_detail_forbidden(client, mock_auth):
     mock_auth.return_value = {
         "sub": "test_user_id",
-        "permissions": []  # No permissions
+        "permissions": [],  # No permissions
     }
     response = client.get(
         "/api/readings/1", headers={"Authorization": "Bearer mock_token"}
     )
     assert response.status_code == 403
-    
+
     # Check if the response is HTML
-    if 'text/html' in response.content_type:
-        assert 'Forbidden' in response.data.decode()
-        assert 'You don&#39;t have the permission to access the requested resource' in response.data.decode()
+    if "text/html" in response.content_type:
+        assert "Forbidden" in response.data.decode()
+        assert (
+            "You don&#39;t have the permission to access the requested resource"
+            in response.data.decode()
+        )
     else:
         # If it's JSON, parse it
         data = json.loads(response.data)
@@ -228,16 +230,13 @@ def test_get_reading_detail_forbidden(client, mock_auth):
 
 # PATCH:question
 def test_update_reading_question(client, mock_auth):
-    mock_auth.return_value = {
-        "sub": "test_user_id",
-        "permissions": ["patch:question"]
-    }
-    
+    mock_auth.return_value = {"sub": "test_user_id", "permissions": ["patch:question"]}
+
     # Create a test reading
     test_reading = Reading(
         auth0_user_id="test_user_id",
         question="Original question?",
-        spread_data=1  # Adjust this based on your spread_data structure
+        spread_data=1,  # Adjust this based on your spread_data structure
     )
     db.session.add(test_reading)
     db.session.commit()
@@ -260,16 +259,13 @@ def test_update_reading_question(client, mock_auth):
 
 
 def test_update_reading_question_bad_request(client, mock_auth):
-    mock_auth.return_value = {
-        "sub": "test_user_id",
-        "permissions": ["patch:question"]
-    }
+    mock_auth.return_value = {"sub": "test_user_id", "permissions": ["patch:question"]}
 
     # Create a test reading
     test_reading = Reading(
         auth0_user_id="test_user_id",
         question="Original question?",
-        spread_data=1  # Adjust this based on your spread_data structure
+        spread_data=1,  # Adjust this based on your spread_data structure
     )
     db.session.add(test_reading)
     db.session.commit()
@@ -293,7 +289,7 @@ def test_update_reading_question_bad_request(client, mock_auth):
 def test_update_reading_question_forbidden(client, mock_auth):
     mock_auth.return_value = {
         "sub": "test_user_id",
-        "permissions": []  # No permissions
+        "permissions": [],  # No permissions
     }
 
     response = client.patch(
@@ -302,10 +298,10 @@ def test_update_reading_question_forbidden(client, mock_auth):
         json={"question": "New question?"},
     )
     assert response.status_code == 403
-    
+
     # Check if the response is HTML
-    if 'text/html' in response.content_type:
-        assert 'Forbidden' in response.data.decode()
+    if "text/html" in response.content_type:
+        assert "Forbidden" in response.data.decode()
     else:
         data = json.loads(response.data)
         assert "error" in data
@@ -315,16 +311,14 @@ def test_update_reading_question_forbidden(client, mock_auth):
 def test_update_reading_question_unauthorized(client, mock_auth):
     # Create a test reading for the correct user
     correct_reading = Reading(
-        auth0_user_id="correct_user_id",
-        question="Original question?",
-        spread_data=1
+        auth0_user_id="correct_user_id", question="Original question?", spread_data=1
     )
     db.session.add(correct_reading)
     db.session.commit()
 
     # Verify the reading was created
     print(f"Created reading with ID: {correct_reading.id}")
-    
+
     # Check if the reading exists in the database
     check_reading = Reading.query.get(correct_reading.id)
     print(f"Reading in DB: {check_reading}")
@@ -332,10 +326,7 @@ def test_update_reading_question_unauthorized(client, mock_auth):
         print(f"Reading auth0_user_id: {check_reading.auth0_user_id}")
 
     # Mock auth for a different user
-    mock_auth.return_value = {
-        "sub": "wrong_user_id",
-        "permissions": ["patch:question"]
-    }
+    mock_auth.return_value = {"sub": "wrong_user_id", "permissions": ["patch:question"]}
 
     try:
         response = client.patch(
@@ -345,10 +336,10 @@ def test_update_reading_question_unauthorized(client, mock_auth):
         )
         print(f"Response status: {response.status_code}")
         print(f"Response data: {response.data}")
-        
+
         # Check for 401 or 404
         assert response.status_code in [401, 404]
-        
+
         if response.status_code == 401:
             data = json.loads(response.data)
             assert "error" in data
