@@ -19,6 +19,7 @@ def test_app():
     app = create_app("testing")
     app.config["TESTING"] = True
     app.config["SQLALCHEMY_ECHO"] = True
+    app.config["SECRET_KEY"] = "test-secret-key"  # Add this line
 
     with app.app_context():
         db.create_all()
