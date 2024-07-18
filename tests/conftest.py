@@ -156,6 +156,24 @@ def mock_config(monkeypatch):
         'API_AUDIENCE': 'test-audience',
         'APPLICATION_ROOT': '/',
         'SERVER_NAME': 'localhost',
-        'PREFERRED_URL_SCHEME': 'http',  # Add this line
+        'PREFERRED_URL_SCHEME': 'http', 
     }
     monkeypatch.setattr('flask.current_app.config', config)
+    
+
+@pytest.fixture
+def mock_auth0(monkeypatch):
+    mock = Mock()
+    mock.authorize_redirect.return_value = "http://mock-redirect"
+    monkeypatch.setattr('app.routes.auth_routes.get_auth0_client', lambda: mock)
+    return mock
+
+@pytest.fixture
+def mock_config(monkeypatch):
+    config = {
+        'AUTH0_DOMAIN': 'test.auth0.com',
+        'AUTH0_CLIENT_ID': 'test-client-id',
+        'API_AUDIENCE': 'test-audience',
+    }
+    monkeypatch.setattr('flask.current_app.config', config)
+    return config

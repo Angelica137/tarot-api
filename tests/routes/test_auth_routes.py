@@ -29,9 +29,8 @@ def mock_token():
 
 def test_login_route(client):
     response = client.get("/api/login")
-    print(f"\nLogin route status code: {response.status_code}")
-    print(f"Login route data: {response.data}")
     assert response.status_code == 302  # Expecting a redirect
+    assert response.location is not None 
 
 
 def test_callback_route(client, mocker):
@@ -70,9 +69,8 @@ def test_callback_route(client, mocker):
 
 def test_logout_route(client):
     response = client.get("/api/logout")
-    print(f"\nLogout route status code: {response.status_code}")
-    print(f"Logout route data: {response.data}")
     assert response.status_code == 302  # Expecting a redirect
+    assert response.location is not None
 
 
 def test_print_routes(client):
