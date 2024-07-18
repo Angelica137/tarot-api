@@ -7,6 +7,7 @@ def test_auth_routes_exist(client, route):
     with client.session_transaction() as sess:
         sess["state"] = "test_state"
     response = client.get(route)
+    print(f"Testing route: {route}, Response status code: {response.status_code}")
     assert response.status_code != 404, f"Route {route} not found"
 
 
