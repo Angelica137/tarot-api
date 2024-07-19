@@ -15,6 +15,7 @@ migrate = Migrate()
 oauth = OAuth()
 
 
+# Factory pattern
 def create_app(config_class=Config):
     app = Flask(__name__)
 
@@ -33,8 +34,12 @@ def create_app(config_class=Config):
     else:
         app.config.from_object(config_class)
 
+    # Use environment variable if set, otherwise use the config object
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL') or app.config['SQLALCHEMY_DATABASE_URI']
+
     # Set up extensions
-    CORS(app, resources={r"/api/*": {"origins": "http://127.0.0.1:5000"}})
+    # CORS(app)
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
     db.init_app(app)
     migrate.init_app(app, db)
     oauth.init_app(app)

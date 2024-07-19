@@ -25,4 +25,6 @@ class DevelopmentConfig(Config):
 
 
 class ProductionConfig(Config):
-    pass
+    DEBUG = False
+    # Ensure we're using the Render database URL in production
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
