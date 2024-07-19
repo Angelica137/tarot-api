@@ -1,5 +1,5 @@
 import logging
-from flask import Flask, session, request
+from flask import Flask, session, request, g
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from config import Config, TestingConfig, DevelopmentConfig, ProductionConfig
@@ -41,14 +41,12 @@ def create_app(config_class=Config):
     )
 
     @app.before_request
-    def add_auth_header():
+    def add_auth_token():
         if 'access_token' in session:
-            if 'Authorization' not in request.headers:
-                request.headers['Authorization'] = f"Bearer {session['access_token']}"
-                app.logger.info("Added Authorization header from session token")
-            else:
-                app.logger.info("Authorization header already present")
+            g.access_token = session['access_token']
+            app.logger.info("Access token added to g object")
         else:
+            g.access_token = None
             app.logger.info("No access token in session")
 
     # Set up extensions

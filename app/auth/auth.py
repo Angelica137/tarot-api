@@ -29,43 +29,37 @@ class AuthError(Exception):
 
 # Auth Header
 def get_token_auth_header():
-    """Obtains the Access Token from the Authorisation Header"""
-    # Get teh authorisation header fomr the request
-    auth = request.headers.get("Authorization", None)
-    print(f"Authorisation headder: {auth}")
+    """Obtains the Access Token from the g object or Authorization Header"""
+    token = g.get('access_token')
+    if token:
+        return token
 
-    # raise an error if no header is present
+    auth = request.headers.get("Authorization", None)
+    print(f"Authorization header: {auth}")
+
     if not auth:
-        raise AuthError(
-            {
-                "code": "authorization_header_missing",
-                "description": "Authorization header is expected.",
-            },
-            401,
-        )
+        raise AuthError({
+            "code": "authorization_header_missing",
+            "description": "Authorization header is expected."
+        }, 401)
 
     parts = auth.split()
 
     if parts[0].lower() != "bearer":
-        raise AuthError(
-            {
-                "code": "invalid_header",
-                "description": "Authorization header must start with Bearer",
-            },
-            401,
-        )
+        raise AuthError({
+            "code": "invalid_header",
+            "description": "Authorization header must start with Bearer"
+        }, 401)
     elif len(parts) == 1:
-        raise AuthError(
-            {"code": "invalid_header", "description": "Token not found"}, 401
-        )
+        raise AuthError({
+            "code": "invalid_header",
+            "description": "Token not found"
+        }, 401)
     elif len(parts) > 2:
-        raise AuthError(
-            {
-                "code": "invalid_header",
-                "description": "Authorization header must be Bearer token",
-            },
-            401,
-        )
+        raise AuthError({
+            "code": "invalid_header",
+            "description": "Authorization header must be Bearer token"
+        }, 401)
 
     token = parts[1]
     return token
@@ -179,23 +173,19 @@ def requires_auth(permission=""):
         @wraps(f)
         def wrapper(*args, **kwargs):
             print(f"Checking permission: {permission}")
-            token = get_token_auth_header()
             try:
+                token = get_token_auth_header()
                 payload = verify_decode_jwt(token)
                 print(f"JWT payload: {payload}")
-            except Exception as e:
-                print(f"JWT verification failed: {e}")
-                abort(401)
-
-            try:
                 check_permissions(permission, payload)
                 print("Permission check passed")
+            except AuthError as e:
+                print(f"Authentication error: {e.error}")
+                return jsonify(e.error), e.status_code
             except Exception as e:
-                print(f"Permission check failed: {e}")
-                abort(403)
+                print(f"Unexpected error: {e}")
+                abort(500)
 
             return f(payload, *args, **kwargs)
-
         return wrapper
-
     return requires_auth_decorator
