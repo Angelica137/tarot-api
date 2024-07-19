@@ -75,6 +75,7 @@ def create_app(config_class=Config):
         app.register_blueprint(utility_bp, url_prefix="/dev")
 
     from app.routes.error_handlers import register_error_handlers
+
     register_error_handlers(app)
 
     app.secret_key = os.getenv("APP_SECRET_KEY")

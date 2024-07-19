@@ -225,7 +225,7 @@ def test_get_reading_detail_forbidden(client, mock_auth):
         # If it's JSON, parse it
         data = json.loads(response.data)
         assert "error" in data
-        assert "permission" in data["error"].lower()
+        assert "forbidden" in data["error"].lower()
 
 
 # PATCH:question
@@ -305,7 +305,7 @@ def test_update_reading_question_forbidden(client, mock_auth):
     else:
         data = json.loads(response.data)
         assert "error" in data
-        assert "permission" in data["error"].lower()
+        assert "forbidden" in data["error"].lower()
 
 
 def test_update_reading_question_unauthorized(client, mock_auth):

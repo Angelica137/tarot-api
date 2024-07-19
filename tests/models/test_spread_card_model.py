@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import pytest
 from app.models.spread_card_model import SpreadCard
 

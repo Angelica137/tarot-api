@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import pytest
 from app.models.reading_model import Reading
 from datetime import datetime

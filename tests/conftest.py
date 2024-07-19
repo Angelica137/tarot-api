@@ -1,9 +1,11 @@
+import datetime
 import pytest
 from app import create_app, db
 from sqlalchemy.orm import scoped_session, sessionmaker
 from app.models.reading_model import Reading
 from unittest.mock import patch, Mock
-from flask import session
+from flask import session, abort
+from app.routes.error_handlers import register_error_handlers
 
 
 pytest_plugins = ["pytest_mock"]
@@ -16,15 +18,45 @@ def clear_db(session):
     yield
 
 
-@pytest.fixture(scope="module")
-def test_app():
+pytest_plugins = ["pytest_mock"]
+
+
+def create_test_app():
     app = create_app("testing")
     app.config["TESTING"] = True
     app.config["SQLALCHEMY_ECHO"] = True
     app.config["SECRET_KEY"] = "test-secret-key"
     app.config["APPLICATION_ROOT"] = "/"
-    app.config["PREFERRED_URL_SCHEME"] = "http"  # Add this line
+    app.config["PREFERRED_URL_SCHEME"] = "http"
 
+    register_error_handlers(app)
+
+    @app.route("/trigger_400")
+    def trigger_400():
+        abort(400, description="Bad request")
+
+    @app.route("/trigger_401")
+    def trigger_401():
+        abort(401, description="Unauthorized")
+
+    @app.route("/trigger_403")
+    def trigger_403():
+        abort(403, description="Forbidden")
+
+    @app.route("/trigger_405", methods=["GET"])
+    def trigger_405():
+        return "This route only allows GET"
+
+    @app.route("/trigger_500")
+    def trigger_500():
+        abort(500, description="Internal server error")
+
+    return app
+
+
+@pytest.fixture(scope="module")
+def test_app():
+    app = create_test_app()
     with app.app_context():
         db.create_all()
         yield app

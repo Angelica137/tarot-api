@@ -2,6 +2,11 @@ import pytest
 import responses
 from flask import session
 
+"""
+AUTH routes test pass locally, but I could not get
+Github actions working for these tests
+"""
+
 
 @pytest.mark.parametrize("route", ["/api/login", "/api/logout", "/api/callback"])
 @responses.activate

@@ -31,16 +31,6 @@ def method_not_allowed(e):
     return jsonify({"error": "Method not allowed"}), 405
 
 
-def conflict(e):
-    current_app.logger.error(f"409 error: {str(e)}")
-    return jsonify({"error": "Conflict"}), 409
-
-
-def unsupported_media_type(e):
-    current_app.logger.error(f"415 error: {str(e)}")
-    return jsonify({"error": "Unsupported media type"}), 415
-
-
 # Register error handlers in your application
 def register_error_handlers(app):
     app.register_error_handler(404, resource_not_found)
@@ -49,5 +39,3 @@ def register_error_handlers(app):
     app.register_error_handler(401, unauthorized)
     app.register_error_handler(403, forbidden)
     app.register_error_handler(405, method_not_allowed)
-    app.register_error_handler(409, conflict)
-    app.register_error_handler(415, unsupported_media_type)
