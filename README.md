@@ -24,27 +24,51 @@ A RESTful API for tarot card readings, built with Flask and deployed on Render.
 ## Installation
 
 1. Clone the repository:
-   ```
-   git clone https://github.com/your-username/tarot-reading-api.git
-   cd tarot-reading-api
-   ```
+```
+git clone https://github.com/your-username/tarot-reading-api.git
+cd tarot-reading-api
+```
 
-2. Install dependencies:
-   ```
-   pip install -r requirements.txt
-   ```
+2. Set up a virtual environment:
+```
+python3 -m venv venv
+```
 
-3. Set up your environment variables (database URL, Auth0 credentials, etc.)
+3. Activate the virtual environment:
 
-4. Initialize the database:
-   ```
-   flask db upgrade
-   ```
+- On macOS and Linux:
+```
+source venv/bin/activate
+```
 
-5. Run the application:
-   ```
-   flask run
-   ```
+- On Windows:
+```
+Copyvenv\Scripts\activate
+```
+
+4. Install dependencies:
+```
+pip install -r requirements.txt
+```
+
+5. Set up your environment variables (database URL, Auth0 credentials, etc.). Refer to [auth_config.sh](/Users/Angelica/Documents/Coding/Udacity/full-stack-nanodegree/tarot-api/auth_config.sh).
+
+6. Initialize the database:
+```
+flask db upgrade
+```
+
+7. Run the application:
+```
+FLASK_APP=run.py FLASK_ENV=development flask run
+```
+
+8. To deactivate the virtual environment when you're done:
+```
+deactivate
+```
+
+Make sure you have Python 3.7 or later installed on your system before starting the installation process.
 
 ## API Documentation
 
@@ -89,7 +113,7 @@ Here are some example API calls using curl:
    curl -X GET "http://your-api-url/readings/" -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
    ```
 
-# Live API URL
+## Live API URL
 The API is accessible at: https://tarot-api-shar.onrender.com
 
 ## Endpoints
@@ -109,7 +133,7 @@ Delete a reading:
 DELETE https://tarot-api-shar.onrender.com/api/readings/<reading_id>
 
 
-# Authentication
+## Authentication
 
 ### Please refer to [auth_config.sh](/Users/Angelica/Documents/Coding/Udacity/full-stack-nanodegree/tarot-api/auth_config.sh) for tokens or go through signin flow.
 
@@ -129,3 +153,45 @@ Copycurl -X GET "https://tarot-api-shar.onrender.com/api/readings/" -H "Authoriz
 
 
 Replace YOUR_ACCESS_TOKEN with a valid access token obtained through the authentication process.
+
+## Running Tests
+To run the tests for this project, follow these steps:
+
+1. Ensure you have activated your virtual environment (if you haven't already):
+```
+source venv/bin/activate  # On macOS/Linux
+venv\Scripts\activate     # On Windows
+```
+
+2. Install test dependencies (if you haven't already):
+```
+pip install -r requirements-dev.txt
+```
+
+3. Set up your test environment variables:
+```
+export FLASK_ENV=testing  # On macOS/Linux
+set FLASK_ENV=testing     # On Windows
+```
+
+4. Run the tests using pytest:
+```
+pytest
+```
+
+5. To run tests with coverage report:
+```
+pytest --cov=app --cov-report=term-missing
+```
+
+6. To run a specific test file:
+```
+pytest tests/path_to_test_file.py
+```
+
+7. To run a specific test function:
+```
+pytest tests/path_to_test_file.py::test_function_name
+```
+
+Note: Make sure you're in the root directory of the project when running these commands.
