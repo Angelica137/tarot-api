@@ -55,7 +55,7 @@ def callback():
     logging.info("User logged in")
 
     # Log the entire token object - debugging
-    # logging.info(f"Full Auth0 token object: {json.dumps(token, indent=2)}")
+    logging.info(f"Full Auth0 token object: {json.dumps(token, indent=2)}")
 
     # Log specific parts of the token
     # logging.info(f"Access token: {token.get('access_token', 'Not found')}")

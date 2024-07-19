@@ -89,10 +89,43 @@ Here are some example API calls using curl:
    curl -X GET "http://your-api-url/readings/" -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
    ```
 
-## Contributing
+# Live API URL
+The API is accessible at: https://tarot-api-shar.onrender.com
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+## Endpoints
+Here are the main endpoints of the API:
 
-## License
+Get a specific card:
+GET https://tarot-api-shar.onrender.com/api/cards/<card_id>
+Perform a reading:
+POST https://tarot-api-shar.onrender.com/api/spreads/<spread_id>
+Retrieve all readings:
+GET https://tarot-api-shar.onrender.com/api/readings/
+Get a specific reading:
+GET https://tarot-api-shar.onrender.com/api/readings/<reading_id>
+Update a reading's question:
+PATCH https://tarot-api-shar.onrender.com/api/readings/<reading_id>/question
+Delete a reading:
+DELETE https://tarot-api-shar.onrender.com/api/readings/<reading_id>
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+
+# Authentication
+
+### Please refer to [auth_config.sh](/Users/Angelica/Documents/Coding/Udacity/full-stack-nanodegree/tarot-api/auth_config.sh) for tokens or go through signin flow.
+
+This API uses Auth0 for authentication. To access protected endpoints, you need to include a valid JWT token in the Authorization header:
+CopyAuthorization: Bearer YOUR_ACCESS_TOKEN
+Usage Examples
+Here are some example API calls using curl:
+
+Retrieve a card:
+Copycurl -X GET "https://tarot-api-shar.onrender.com/api/cards/1" -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
+
+Perform a reading:
+Copycurl -X POST "https://tarot-api-shar.onrender.com/api/spreads/1" -H "Authorization: Bearer YOUR_ACCESS_TOKEN" -H "Content-Type: application/json" -d '{"question": "What does my future hold?"}'
+
+Retrieve all readings:
+Copycurl -X GET "https://tarot-api-shar.onrender.com/api/readings/" -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
+
+
+Replace YOUR_ACCESS_TOKEN with a valid access token obtained through the authentication process.

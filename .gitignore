@@ -3,6 +3,7 @@ venv/
 env/
 .venv/
 
+auth_config.sh
 # Environment variables
 .env
 
