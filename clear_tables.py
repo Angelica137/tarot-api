@@ -9,7 +9,7 @@ def clear_tables():
     db.session.execute(text("DELETE FROM spreads"))
     db.session.execute(text("DELETE FROM spread_layouts"))
 
-    # If you have a spread_cards table, uncomment the following line
+    # When spread_cards table, uncomment the following line
     # db.session.execute(text('DELETE FROM spread_cards'))
 
     db.session.commit()

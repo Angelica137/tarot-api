@@ -3,9 +3,10 @@ venv/
 env/
 .venv/
 
-auth_config.sh
 # Environment variables
 .env
+
+auth_config.sh
 
 # Python bytecode
 __pycache__

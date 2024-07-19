@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from flask import Blueprint, jsonify, request
 from app.auth.auth import requires_auth
 from app.services.spread_service import get_spread_data
