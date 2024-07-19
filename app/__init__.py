@@ -42,8 +42,8 @@ def create_app(config_class=Config):
 
     @app.before_request
     def add_auth_token():
-        if 'access_token' in session:
-            g.access_token = session['access_token']
+        if "access_token" in session:
+            g.access_token = session["access_token"]
             app.logger.info("Access token added to g object")
         else:
             g.access_token = None
