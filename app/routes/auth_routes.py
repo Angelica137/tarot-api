@@ -93,3 +93,14 @@ def logout():
         + "/v2/logout?"
         + urlencode(params, quote_via=quote_plus)
     )
+
+
+@auth_bp.route("/api/debug/auth")
+def auth_debug():
+    return jsonify(
+        {
+            "session_contains_token": "access_token" in session,
+            "auth_header_present": "Authorization" in request.headers,
+            "auth_header": request.headers.get("Authorization"),
+        }
+    )
