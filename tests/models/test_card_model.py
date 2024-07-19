@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import pytest
 from app.models.card_model import Card
 import json

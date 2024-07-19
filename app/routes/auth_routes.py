@@ -47,20 +47,20 @@ def login():
 def callback():
     auth0 = get_auth0_client()
 
-    # Verify the state to protect against CSRF attacks
+    # Verify the state to protect against CSRF attacks, I always forget
     if request.args.get("state") != session["state"]:
         logging.error("Invalid state. Possible CSRF attack.")
 
     token = auth0.authorize_access_token()
     logging.info("User logged in")
 
-    # Log the entire token object
-    logging.info(f"Full Auth0 token object: {json.dumps(token, indent=2)}")
+    # Log the entire token object - debugging
+    # logging.info(f"Full Auth0 token object: {json.dumps(token, indent=2)}")
 
     # Log specific parts of the token
-    logging.info(f"Access token: {token.get('access_token', 'Not found')}")
-    logging.info(f"ID token: {token.get('id_token', 'Not found')}")
-    logging.info(f"Refresh token: {token.get('refresh_token', 'Not found')}")
+    # logging.info(f"Access token: {token.get('access_token', 'Not found')}")
+    # logging.info(f"ID token: {token.get('id_token', 'Not found')}")
+    # logging.info(f"Refresh token: {token.get('refresh_token', 'Not found')}")
 
     resp = auth0.get("userinfo")
     userinfo = resp.json()

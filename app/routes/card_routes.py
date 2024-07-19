@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from flask import Blueprint, jsonify, request, current_app, session
 from app.auth.auth import requires_auth
 from app.models.card_model import Card

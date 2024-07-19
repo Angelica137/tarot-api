@@ -22,6 +22,8 @@ def create_app(config_class=Config):
     if isinstance(config_class, str):
         if config_class == "testing":
             app.config.from_object(TestingConfig)
+            app.config["TESTING"] = True
+            app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "test-secret-key")
         elif config_class == "development":
             app.config.from_object(DevelopmentConfig)
         elif config_class == "production":
@@ -72,9 +74,9 @@ def create_app(config_class=Config):
 
         app.register_blueprint(utility_bp, url_prefix="/dev")
 
-    from app.routes.error_handlers import resource_not_found
+    from app.routes.error_handlers import register_error_handlers
 
-    app.register_error_handler(404, resource_not_found)
+    register_error_handlers(app)
 
     app.secret_key = os.getenv("APP_SECRET_KEY")
 
