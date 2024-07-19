@@ -1,4 +1,5 @@
-from flask import Flask
+import logging
+from flask import Flask, session, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from config import Config, TestingConfig, DevelopmentConfig, ProductionConfig
@@ -38,6 +39,17 @@ def create_app(config_class=Config):
     app.config["SQLALCHEMY_DATABASE_URI"] = (
         os.getenv("DATABASE_URL") or app.config["SQLALCHEMY_DATABASE_URI"]
     )
+
+    @app.before_request
+    def add_auth_header():
+        if 'access_token' in session:
+            if 'Authorization' not in request.headers:
+                request.headers['Authorization'] = f"Bearer {session['access_token']}"
+                app.logger.info("Added Authorization header from session token")
+            else:
+                app.logger.info("Authorization header already present")
+        else:
+            app.logger.info("No access token in session")
 
     # Set up extensions
     # CORS(app)
