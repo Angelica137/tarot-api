@@ -35,7 +35,9 @@ def create_app(config_class=Config):
         app.config.from_object(config_class)
 
     # Use environment variable if set, otherwise use the config object
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL') or app.config['SQLALCHEMY_DATABASE_URI']
+    app.config["SQLALCHEMY_DATABASE_URI"] = (
+        os.getenv("DATABASE_URL") or app.config["SQLALCHEMY_DATABASE_URI"]
+    )
 
     # Set up extensions
     # CORS(app)
