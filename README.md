@@ -116,6 +116,12 @@ Here are some example API calls using curl:
 ## Live API URL
 The API is accessible at: https://tarot-api-shar.onrender.com
 
+To try the endpoints in the live version you can use the accounts
+- free_user@oracle.com
+- premium_user@oracle.com
+
+**password:** test_oracle123
+
 ## Endpoints
 Here are the main endpoints of the API:
 
