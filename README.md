@@ -127,14 +127,19 @@ Here are the main endpoints of the API:
 
 Get a specific card:
 GET https://tarot-api-shar.onrender.com/api/cards/<card_id>
+
 Perform a reading:
 POST https://tarot-api-shar.onrender.com/api/spreads/<spread_id>
+
 Retrieve all readings:
 GET https://tarot-api-shar.onrender.com/api/readings/
+
 Get a specific reading:
 GET https://tarot-api-shar.onrender.com/api/readings/<reading_id>
+
 Update a reading's question:
 PATCH https://tarot-api-shar.onrender.com/api/readings/<reading_id>/question
+
 Delete a reading:
 DELETE https://tarot-api-shar.onrender.com/api/readings/<reading_id>
 
