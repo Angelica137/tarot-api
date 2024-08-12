@@ -116,7 +116,7 @@ Here are some example API calls using curl:
 ## Live API URL
 The API is accessible at: https://tarot-api-shar.onrender.com
 
-To try the endpoints in the live version you can use the accounts
+You will need to be logged in to access the endpoints.You can use the accounts
 - free_user@oracle.com
 - premium_user@oracle.com
 
@@ -131,16 +131,16 @@ GET https://tarot-api-shar.onrender.com/api/cards/<card_id>
 Perform a reading:
 POST https://tarot-api-shar.onrender.com/api/spreads/<spread_id>
 
-Retrieve all readings:
+Retrieve all readings (premium):
 GET https://tarot-api-shar.onrender.com/api/readings/
 
-Get a specific reading:
+Get a specific reading (premium):
 GET https://tarot-api-shar.onrender.com/api/readings/<reading_id>
 
-Update a reading's question:
+Update a reading's question (premium):
 PATCH https://tarot-api-shar.onrender.com/api/readings/<reading_id>/question
 
-Delete a reading:
+Delete a reading (premium):
 DELETE https://tarot-api-shar.onrender.com/api/readings/<reading_id>
 
 
