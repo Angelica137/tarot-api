@@ -116,11 +116,14 @@ Here are some example API calls using curl:
 ## Live API URL
 The API is accessible at: [tarot-api](https://tarot-api-shar.onrender.com/api/)
 
-You will need to be logged in to access the endpoints.You can use the accounts
+You will need to be logged in to access the endpoints. You can use these accounts:
 - free_user@oracle.com
 - premium_user@oracle.com
 
 **password:** test_oracle123
+
+A free user can see a card by id, and get a spread.
+A premium user can also save their readings and access them later. Update the question they asked and delete a reading.
 
 ## Endpoints
 Here are the main endpoints of the API:
